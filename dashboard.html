@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/swiper-icons.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/Filter.css">
+    <link rel="stylesheet" href="assets/css/Hero-Features-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/Ludens---Index-v2-with-Backend--Frontend-Filters.css">
+    <link rel="stylesheet" href="assets/css/Projects-Grid-images.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider-swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop-2" type="button"><i class="fas fa-bars"></i></button><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"></path>
+                                <path d="M10 9v-4"></path>
+                                <path d="M2 7v4"></path>
+                                <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"></path>
+                                <path d="M5 12v-3h13"></path>
+                            </svg></span>
+                        <nav class="navbar navbar-expand-md bg-body">
+                            <div class="container-fluid"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                                    <div></div>
+                                    <div class="sidebar-brand-text mx-3"><span>Car Rental Services</span></div>
+                                </a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                                <div class="collapse navbar-collapse" id="navcol-2">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item"><a class="nav-link active" href="profile.html">Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                                        <li class="nav-item"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="me-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light border-0 form-control small" type="text" placeholder="Search for ..."><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1"></li>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown show no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="true" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Employee</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg" width="32" height="32" style="width: 52px;height: 52px;"></a>
+                                    <div class="dropdown-menu show shadow dropdown-menu-end animated--grow-in" data-bs-popper="none"><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0">Dashboard</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="products.html">Book Now</a>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12" style="margin-bottom: 20px;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title"><strong>Filter</strong></h4>
+                                    <div class="row">
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-group mb-3"><label class="form-label">Invoice #</label><input type="text" class="form-control" placeholder="Invoice#"></div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-group mb-3"><label class="form-label">Username</label><input type="text" class="form-control" placeholder="Username"></div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-group mb-3"><label class="form-label">Date</label><input class="form-control" type="date"></div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-group mb-3"><label class="form-label">Name</label><input type="text" class="form-control" placeholder="Name"></div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-group mb-3">
+                                                <div class="form-group mb-3"><label class="form-label">Email</label><input type="text" class="form-control" placeholder="email"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-auto d-flex d-lg-flex justify-content-end justify-content-lg-end"><button class="btn btn-primary" type="button">Filter</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="TableSorterCard">
+                        <div class="card-header py-3"></div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table tablesorter" id="ipi-table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="text-center">Invoice#</th>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Email</th>
+                                                <th class="text-center">Username</th>
+                                                <th class="text-center">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            <tr>
+                                                <td>Invoice#9900</td>
+                                                <td>James hardgrove</td>
+                                                <td>jameshardgrove@gmail.com</td>
+                                                <td>Jhardy99</td>
+                                                <td>08/09/2024</td>
+                                                <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btn-dark btnMaterial btn-flat primary semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="assets/img/dogs/image2.jpeg" title="Adjuntar archivo" download=""><i class="fas fa-download text-warning" style="font-size:15px;"></i></a><a class="btn btnMaterial btn-flat primary semicircle" role="button" data-bs-toggle="modal" data-bss-tooltip="" href="show.html" title="Look" data-bs-target="#profile-modal"><i class="far fa-eye"></i></a><a class="btn btnMaterial btn-flat success semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="create-document.html" title="Edit"><i class="fas fa-pen"></i></a><a class="btn btnMaterial btn-flat success semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" title="Undo"><i class="fas fa-undo"></i></a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Invoice#9902</td>
+                                                <td>Judy Moody</td>
+                                                <td>Jmoody@outlook.com</td>
+                                                <td>Jmod697</td>
+                                                <td>08/08/2024</td>
+                                                <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btn-dark btnMaterial btn-flat primary semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="assets/img/dogs/image2.jpeg" title="Download" download=""><i class="fas fa-download text-warning" style="font-size:15px;"></i></a><a class="btn btnMaterial btn-flat primary semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="show.html" title="Ver detalles"><i class="far fa-eye"></i></a><a class="btn btnMaterial btn-flat success semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="create-document.html" title="Turnar"><i class="fas fa-pen"></i></a><a class="btn btnMaterial btn-flat success semicircle" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" title="Turnar"><i class="fas fa-undo"></i></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" role="dialog" tabindex="-1" id="profile-modal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">John Doe's Account</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col">
+                                <div class="card shadow mb-3">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 fw-bold">Account</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3"><label class="form-label" for="username"><strong>Username</strong></label><input class="form-control-plaintext" type="text" value="JDoe24" readonly=""></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label><input class="form-control" type="email" id="email" placeholder="user@example.com" name="email" readonly=""></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3"><label class="form-label" for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" placeholder="John" name="first_name" readonly=""></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-3"><label class="form-label" for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" placeholder="Doe" name="last_name" readonly=""></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3"><label class="form-label" for="first_name"><strong>Age</strong></label><input class="form-control" type="number" style="width: 94.7px;" readonly="" value="22"></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-3"><label class="form-label" for="last_name-1"><strong>Gender</strong></label><select class="form-select" style="width: 146.7px;" value="Gender" readonly="">
+                                                            <optgroup label="Gender">
+                                                                <option value="12" selected="">Male</option>
+                                                                <option value="13">Female</option>
+                                                                <option value="14">Other</option>
+                                                            </optgroup>
+                                                        </select></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card shadow">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 fw-bold">Contact&nbsp;</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-xxl-6"><label class="form-label" for="address"><strong>Address</strong></label><input class="form-control-plaintext" type="text" value="1111 Robert Kelly ln" readonly=""></div>
+                                                <div class="col-xl-4 col-xxl-3 offset-xl-0">
+                                                    <div class="mb-3"><label class="form-label" for="city"><strong>City</strong></label><input class="form-control-plaintext" type="text" value="Los Angela" readonly=""></div>
+                                                </div>
+                                                <div class="col-xl-3 col-xxl-1">
+                                                    <div class="mb-3"><label class="form-label" for="state"><strong>State</strong></label><input class="form-control-plaintext" type="text" id="stae" value="CA" readonly=""></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-3">
+                                                    <div class="mb-3"><label class="form-label" for="state"><strong>Zip</strong></label><input class="form-control-plaintext" type="text" id="zip" value="2020" readonly=""></div>
+                                                </div>
+                                                <div class="col"><label class="form-label" for="Phone Number"><strong>Phone Number</strong></label><input class="form-control-plaintext" type="text" value="(919) 777-6969" readonly=""></div>
+                                            </div>
+                                            <div class="mb-3"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow mb-4" data-bs-target="#navcol-2" style="margin-left: 15px;padding-left: 2px;padding-right: 0px;margin-right: 13px;">
+                                <div class="card-header py-3">
+                                    <h6 class="text-primary fw-bold m-0">Documents</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="mb-3"><label class="form-label">Drive License</label><a href="" download="" style="display: block;color: var(--swiper-theme-color);text-decoration: underline;padding-left: 20px;"> Document Name </a></div>
+                                        <div class="mb-3"><label class="form-label">Insurance</label><a href="" download="" style="display: block;color: var(--swiper-theme-color);text-decoration: underline;padding-left: 20px;"> Document Name </a></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Brand 2024</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/bold-and-bright.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="assets/js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js"></script>
+    <script src="assets/js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js"></script>
+    <script src="assets/js/Simple-Slider-swiper-bundle.min.js"></script>
+    <script src="assets/js/Simple-Slider.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
+</html>
