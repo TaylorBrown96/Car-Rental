@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Shopping Cart - Car Rental</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/swiper-icons.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Filter.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Hero-Features-icons.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Ludens---Index-v2-with-Backend--Frontend-Filters.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Projects-Grid-images.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider-swiper-bundle.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider.css')}}">
+</head>
+
+<body style="background: #CDDDDD;">
+    <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                        <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                        <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"></path>
+                        <path d="M10 9v-4"></path>
+                        <path d="M2 7v4"></path>
+                        <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"></path>
+                        <path d="M5 12v-3h13"></path>
+                    </svg></span><span style="font-size: 40px;font-weight: bold;text-align: center;--bs-dark: #2e2f2f;--bs-dark-rgb: 46,47,47;">Car Rental Service</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                </ul><a class="btn btn-secondary shadow" role="button" id="cartbutton" style="--bs-primary: #A599B5;--bs-primary-rgb: 165,153,181;--bs-secondary: #ACBDBA;--bs-secondary-rgb: 172,189,186;background: #acbdba;border-style: none;margin-right: 10px;" href="shopping-cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart-fill">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"></path>
+                    </svg></a><button class="btn btn-primary shadow" type="button" data-bs-target="#signup" data-bs-toggle="modal" style="margin-right: 10px;">Account</button><a class="btn btn-danger shadow" role="button" href="login.html" data-bs-target="#signup" data-bs-toggle="modal">Sign out</a>
+            </div>
+        </div>
+    </nav>
+    <section class="py-5">
+        <h2 style="font-size: 65px;text-align: center;font-weight: bold;">Your Cart</h2>
+        <div class="container py-5">
+            <div class="row mx-auto">
+                <div class="col"><div class="shopping-cart">
+<div class="px-4 px-lg-0">
+
+  <div class="pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+          <!-- Shopping cart table -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="p-2 px-3 text-uppercase">Product</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="py-2 text-uppercase">Date Range</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="py-2 text-uppercase">Quantity</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="py-2 text-uppercase">Remove</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="border-0">
+                    <div class="p-2">
+                      <img src="https://www.bkford.com/blogs/2764/wp-content/uploads/2023/11/cq5dam.web_.881.495.jpeg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                      <div class="ml-3 d-inline-block align-middle">
+                        <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">0000 Make Model</a></h5><span class="text-muted font-weight-normal font-italic d-block">Type: Truck</span>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="border-0 align-middle"><strong>09/15/24-09/17/24</strong></td>
+                  <td class="border-0 align-middle"><strong>1</strong></td>
+                  <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <div class="p-2">
+                      <img src="https://hips.hearstapps.com/hmg-prod/images/21802-2025-k5-65c51c31b9323.jpg?crop=0.657xw:0.555xh;0.226xw,0.178xh&resize=700:*" alt="" width="70" class="img-fluid rounded shadow-sm">
+                      <div class="ml-3 d-inline-block align-middle">
+                        <h5 class="mb-0"><a href="#" class="text-dark d-inline-block">0000 Make Model</a></h5><span class="text-muted font-weight-normal font-italic">Type: Sedan</span>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="align-middle"><strong>09/15/24-09/17/24</strong></td>
+                  <td class="align-middle"><strong>1</strong></td>
+                  <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <div class="p-2">
+                      <img src="https://www.kbb.com/wp-content/uploads/2020/11/2021-kia-k5-blue-12x9-1.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                      <div class="ml-3 d-inline-block align-middle">
+                        <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block">0000 Make Model</a></h5><span class="text-muted font-weight-normal font-italic">Type: Sedan</span>
+                      </div>
+                    </div>
+                    <td class="align-middle"><strong>09/15/24-09/17/24</strong></td>
+                    <td class="align-middle"><strong>1</strong></td>
+                    <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- End -->
+        </div>
+      </div>
+
+      <div class="row py-5 p-4 bg-white rounded shadow-sm">
+        <div class="col-lg-6">
+          <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
+          <div class="p-4">
+            <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
+            <div class="input-group mb-4 border rounded-pill p-2">
+              <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
+              <div class="input-group-append border-0">
+                <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i> Apply coupon</button>
+              </div>
+            </div>
+             <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Rental Agreement</div>
+              <div class="p-4">
+                <a href="geeksforgeeks.png" download="GFG">
+                    <button class="btn btn-dark rounded-pill py-2 btn-block" style="margin-bottom: 5px;" type="button">Download Agreement Here</button>
+                </a><br><br>
+                <label for="formFile" style="margin-left: 5px;" class="form-label"><b>Upload Agreement Here</b></label>
+                <input class="form-control" type="file" id="formFile">
+          </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+          <div class="p-4">
+            <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
+            <ul class="list-unstyled mb-4">
+              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Car Rate </strong><strong>$65/day</strong></li>
+              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
+              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax (7% NC)</strong><strong>$0.00</strong></li>
+              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+                <h5 class="font-weight-bold">$400.00</h5>
+              </li>
+            </ul><a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div></div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
+        <div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
+            <hr>
+            <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
+    <script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js')}}"></script>
+</body>
+
+</html>
