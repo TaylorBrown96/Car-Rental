@@ -49,7 +49,9 @@ def logout():
 def signup():
     return redirect(url_for("products"))
 
-
+@app.route('/profile' )
+def profile():
+    return render_template("profile.html")
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~METHODS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 def login_user(email, password):
     data = get_user(email)
@@ -138,11 +140,11 @@ def update_vehicle_information(vehicleID):
 
 
 # Uncomment the docstring only when you specifically want to load users into database
-"""@app.route("/test")
+@app.route("/test")
 def run_test():
     create_user("Taylor J. Brown", "123 ABC St. Fayetteville, NC 28314", 9168737714, "tbrown145@broncos.uncfsu.edu", 27, "M", "Test123abc")
     create_user("Admin", "123 ABC St. Fayetteville, NC 28314", 9105554545, "admin@admin.com", 99, "M", "Test123abc", 1)
-    return redirect(url_for("index"))"""
+    return redirect(url_for("index"))
 
 if __name__ == '__main__':
     app.run(debug=True)
