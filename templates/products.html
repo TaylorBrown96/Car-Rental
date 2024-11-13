@@ -22,7 +22,7 @@
 
 <body>
     <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/products"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
                         <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
@@ -51,80 +51,24 @@
                     <h2 style="font-size: 65px;text-align: center;font-weight: bold;">Available Vehicles</h2>
                 </div>
             </div><div class="filter" style="margin-bottom: 15px;">
-    <form>
-        <select>
-            <option value="">Type</option>
-            <option value="sedan">Sedan</option>
-            <option value="truck">Truck</option>
-            <option value="cargo">Cargo Van</option>
-            <option value="other">Other</option>
-        </select>
-        <select>
-            <option value="">Make</option>
-            <option value="ACURA">ACURA</option>
-            <option value="ASTON MARTIN">ASTON MARTIN</option>
-            <option value="AUDI">AUDI</option>
-            <option value="BENTLEY">BENTLEY</option>
-            <option value="BMW">BMW</option>
-            <option value="BUICK">BUICK</option>
-            <option value="CADILLAC">CADILLAC</option>
-            <option value="CHEVROLET">CHEVROLET</option>
-            <option value="CHRYSLER">CHRYSLER</option>
-            <option value="DODGE">DODGE</option>
-            <option value="FERRARI">FERRARI</option>
-            <option value="FORD">FORD</option>
-            <option value="GMC">GMC</option>
-            <option value="HONDA">HONDA</option>
-            <option value="HUMMER">HUMMER</option>
-            <option value="HYUNDAI">HYUNDAI</option>
-            <option value="INFINITI">INFINITI</option>
-            <option value="ISUZU">ISUZU</option>
-            <option value="JAGUAR">JAGUAR</option>
-            <option value="JEEP">JEEP</option>
-            <option value="KIA">KIA</option>
-            <option value="LAMBORGHINI">LAMBORGHINI</option>
-            <option value="LAND ROVER">LAND ROVER</option>
-            <option value="LEXUS">LEXUS</option>
-            <option value="LINCOLN">LINCOLN</option>
-            <option value="LOTUS">LOTUS</option>
-            <option value="MASERATI">MASERATI</option>
-            <option value="MAYBACH">MAYBACH</option>
-            <option value="MAZDA">MAZDA</option>
-            <option value="MERCEDES-BENZ">MERCEDES-BENZ</option>
-            <option value="MERCURY">MERCURY</option>
-            <option value="MINI">MINI</option>
-            <option value="MITSUBISHI">MITSUBISHI</option>
-            <option value="NISSAN">NISSAN</option>
-            <option value="PONTIAC">PONTIAC</option>
-            <option value="PORSCHE">PORSCHE</option>
-            <option value="ROLLS-ROYCE">ROLLS-ROYCE</option>
-            <option value="SAAB">SAAB</option>
-            <option value="SATURN">SATURN</option>
-            <option value="SUBARU">SUBARU</option>
-            <option value="SUZUKI">SUZUKI</option>
-            <option value="TOYOTA">TOYOTA</option>
-            <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-            <option value="VOLVO">VOLVO</option>
-        </select>
-        <select>
-            <option value="">Drive Train</option>
-            <option value="fourWheel">4x4</option>
-            <option value="twoWheel">2x4</option>
-            <option value="allWheel">AWD</option>
-        </select>
-        <select>
-            <option value="">Transmission</option>
-            <option value="manual">Manual</option>
-            <option value="automatic">Automatic</option>
-        </select>
-        <select>
-            <option value="">Location</option>
-            <option value="location1">Location1</option>
-            <option value="location2">Location2</option>
-            <option value="location3">Location3</option>
-        </select>
-        <button class="btn btn-success" style="margin-bottom: 5px;">Apply</button>
-    </form>
+        <form method="POST" action="{{ url_for('products') }}">
+            <select name='type'>
+                {{ options['type_options']|safe }}
+            </select>
+            <select name='make'>
+                {{ options['make_options']|safe }}
+            </select>
+            <select name='drive'>
+                {{ options['drive_options']|safe }}
+            </select>
+            <select name='transmission'>
+                {{ options['transmission_options']|safe }}
+            </select>
+            <select name='location'>
+                {{ options['location_options']|safe }}
+            </select>
+            <button class="btn btn-success" style="margin-bottom: 5px;" type="submit">Apply</button>
+        </form>
     </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
             {{ vehicle_html }}
