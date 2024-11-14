@@ -105,6 +105,31 @@ def login():
             return redirect(url_for("products"))
         else:
             return render_template("login.html", modal=modal)
+        
+@app.route("/forgot_password", methods=['POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email_forgot']
+        new_password = request.form['newpassword']
+        confirm_password = request.form['confirmpassword']
+        
+        if new_password != confirm_password:
+            modal = populateErrorModal("Passwords do not match")
+            return render_template("login.html", modal=modal)
+        
+        if not check_password_meets_requirements(new_password):
+            modal = populateErrorModal("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number")
+            return render_template("login.html", modal=modal)
+        
+        data = get_user(email)
+        
+        if data:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            cursor.execute("UPDATE Users SET Password = ? WHERE Email = ?", (hashlib.sha3_512(new_password.encode()).hexdigest(), email))
+            conn.commit()
+            conn.close()
+            return render_template("login.html", modal=populateErrorModal("Password successfully updated", "Success!"))
 
 # Route for logging out the user
 @app.route("/logout", methods=['POST', 'GET'])
@@ -188,6 +213,8 @@ def cart():
             ).format(Photo=vehicle[10].split("ㄹ")[0], year=vehicle[3], make=vehicle[1], model=vehicle[2], type=vehicle[4], dates=car[1], VehicleID=vehicle[0])
             
     return render_template("shopping-cart.html", cart_html=cart_html)
+
+
 
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~METHODS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
@@ -339,16 +366,16 @@ def login_user(email, password):
         return (False, modal)
             
 # Function to populate an error modal with a specific message
-def populateErrorModal(message):
+def populateErrorModal(message, title="Oh No!"):
     modal = Markup("""
                     <div class="modal fade" role="dialog" id="errorModal">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Oh No!</h4>
+                                        <h4 class="modal-title">{title}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Message</p>
+                                        <p>{message}</p>
                                     </div>
                                     <div class="modal-footer">
                                     <form>
@@ -358,8 +385,19 @@ def populateErrorModal(message):
                                 </div>
                             </div>
                         </div>
-                    """).replace("Message", message)
+                    """).format(title=title, message=message)
     return modal
+
+def check_password_meets_requirements(password):
+    if len(password) < 8:
+        return False
+    if not any(char.isdigit() for char in password):
+        return False
+    if not any(char.isupper() for char in password):
+        return False
+    if not any(char.islower() for char in password):
+        return False
+    return True
 
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SQL QUERIES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
