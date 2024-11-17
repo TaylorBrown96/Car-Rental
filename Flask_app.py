@@ -262,9 +262,7 @@ def remove_from_cart(reserve_id):
             newReservedCars += car[0] + "," + car[1] + "," + car[2] + ";"
     
     session["reservedCars"] = newReservedCars
-    
-    if session["Usertype"] == 1:
-        return redirect(url_for("cart", admin=admin_nav()))
+
     return redirect(url_for("cart"))
 
 
