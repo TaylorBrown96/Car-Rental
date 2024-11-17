@@ -1,12 +1,19 @@
 # Import necessary modules
-from flask import Flask, render_template, request, redirect, session, url_for  # Flask framework components
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify  # Flask framework components
 import sqlite3  # SQLite database interface
 from markupsafe import Markup  # HTML sanitization for safe HTML rendering
 import hashlib  # For hashing passwords
+from datetime import datetime  # For date calculations
+from werkzeug.utils import secure_filename
+import os
 
 # Initialize Flask application
 app = Flask(__name__)
 app.secret_key = 'super secret key'  # Secret key for session management
+
+    # Configure upload folder and allowed extensions
+app.config['UPLOAD_FOLDER'] = 'static/uploads/'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Define database path and dictionaries for vehicle makes and models
 db_path = 'car_rental.db'
@@ -142,6 +149,16 @@ def logout():
 def signup():
     return redirect(url_for("products"))
 
+@app.route("/admin", methods=['POST', 'GET'])
+def admin():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    if session["Usertype"] == 1:
+        session.clear()  # Clear session data
+        return render_template("admin.html")
+    else:
+        return redirect(url_for("products"))
+
 # Route for adding a vehicle to the cart
 @app.route("/addToCart", methods=['POST'])
 def addToCart():
@@ -155,9 +172,9 @@ def addToCart():
     
     return redirect(url_for("products"))
 
-# Route to check and display reservation details
-@app.route("/check_reservation", methods=['POST', 'GET'])
-def check_reservation():
+# Route for removing a vehicle from the cart
+@app.route('/remove/<int:vehicle_id>')
+def remove_from_cart(vehicle_id):
     if "UserID" not in session:
         return redirect(url_for("index"))
     
@@ -165,21 +182,15 @@ def check_reservation():
         return redirect(url_for("products"))
     
     reservedCars = session["reservedCars"].strip().split(";")
+    newReservedCars = ""
     
     for car in reservedCars:
         car = car.strip().split(",")
-        if len(car) == 2:
-            print("Car ID: " + car[0] + " Date Range: " + car[1])
-        else:
-            print("Error: Unexpected format in reservedCars entry:", car)
+        if len(car) == 2 and car[0] != str(vehicle_id):
+            newReservedCars += car[0] + "," + car[1] + ";"
     
-    return redirect(url_for("products"))
-
-# Route to clear all reservations from the session
-@app.route("/clear_reservations", methods=['POST', 'GET'])
-def clear_reservations():
-    session["reservedCars"] = ""  # Clear reserved cars
-    return redirect(url_for("products"))
+    session["reservedCars"] = newReservedCars
+    return redirect(url_for("cart"))
 
 # Route to display cart contents
 @app.route("/cart", methods=['POST', 'GET'])
@@ -208,13 +219,160 @@ def cart():
                         </div>
                     </th>
                     <td class="border-0 align-middle"><strong>{dates}</strong></td>
-                    <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
+                    <td class="border-0 align-middle"><strong>{numDays}</strong></td>
+                    <td class="border-0 align-middle"><a href="/remove/{VehicleID}" class="text-dark"><i class="fa fa-trash"></i></a></td>
                     </tr>"""
-            ).format(Photo=vehicle[10].split("ㄹ")[0], year=vehicle[3], make=vehicle[1], model=vehicle[2], type=vehicle[4], dates=car[1], VehicleID=vehicle[0])
+            ).format(Photo=vehicle[10].split("ㄹ")[0], year=vehicle[3], make=vehicle[1], model=vehicle[2], type=vehicle[4], dates=car[1], VehicleID=vehicle[0], numDays=getNumDays(car[1]))
             
-    return render_template("shopping-cart.html", cart_html=cart_html)
+    checkout_html, totalData = GetCheckoutValues(reservedCars)
+            
+    return render_template("shopping-cart.html", cart_html=cart_html, Rates=checkout_html, subtotal=totalData[0], tax=totalData[1], total=totalData[2] )
 
 
+# Allowed extensions are already defined in the config
+def allowed_file(filename):
+    """
+    Check if the file extension is allowed.
+    """
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
+@app.route('/create_customer', methods=['POST'])
+def create_customer():
+    # Ensure the form data is sent as a file and handle the file upload
+    if 'photo' not in request.files:
+        return jsonify({'error': 'Photo file is required'}), 400
+    
+    photo = request.files['photo']
+    if photo.filename == '':
+        return jsonify({'error': 'No selected photo'}), 400
+
+    # Check if the photo file has an allowed extension
+    if photo and allowed_file(photo.filename):
+        # Secure the filename and save it to the uploads directory
+        filename = secure_filename(photo.filename)
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))  # Save to 'uploads/' folder
+
+        # Now gather other customer details from the form data
+        customer_data = {
+            'name': request.form.get('name'),
+            'address': request.form.get('address'),
+            'phone': request.form.get('phone'),
+            'email': request.form.get('email'),
+            'age': request.form.get('age'),
+            'gender': request.form.get('gender'),
+            'insurance_company': request.form.get('insurance_company'),
+            'photo': filename  # Store the filename in the database
+        }
+
+        # Add dummy values for Username and Password
+        username = customer_data['email'].split('@')[0]  # Use email prefix as username
+        password = "defaultpassword"  # Dummy password
+
+        try:
+            # Call insert_customer function with the required arguments
+            insert_customer(customer_data, filename, username, password)
+            return jsonify({'message': 'Customer created successfully!'}), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    else:
+        return jsonify({'error': 'Invalid photo file format'}), 400
+
+@app.route('/get_customer_by_userid', methods=['POST'])
+def get_customer_by_userid():
+    data = request.get_json()
+    user_id = data.get('userID')
+
+    if not user_id:
+        return jsonify({'error': 'UserID is required'}), 400
+
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Users WHERE UserID = ?", (user_id,))
+    customer = cursor.fetchone()
+    conn.close()
+
+    if customer:
+        customer_data = {
+            'name': customer[1],
+            'address': customer[2],
+            'phone': customer[3],
+            'email': customer[4],
+            'age': customer[5],
+            'gender': customer[6],
+            'insurance_company': customer[7],
+            'photo': customer[8]  # Assuming photo filename is stored in column 8
+        }
+        # Assuming the photos are stored in a folder accessible via '/static/uploads/'
+        photo_url = url_for('static', filename=f'uploads/{customer[8]}') if customer[8] else None
+
+        customer_data['photo_url'] = photo_url
+
+        return jsonify({'customer': customer_data})
+    else:
+        return jsonify({'error': 'Customer not found'}), 404
+
+@app.route('/modify_customer', methods=['POST'])
+def modify_customer():
+    customer_data = request.json  # Get the JSON payload from the frontend
+
+    # Ensure that the UserID is provided
+    if 'userID' not in customer_data or not customer_data['userID']:
+        return jsonify({'error': 'UserID is required'}), 400
+
+    # Get the UserID and other customer data
+    user_id = customer_data['userID']
+    name = customer_data.get('name')
+    address = customer_data.get('address')
+    phone = customer_data.get('phone')
+    email = customer_data.get('email')
+    age = customer_data.get('age')
+    gender = customer_data.get('gender')
+    insurance_company = customer_data.get('insurance_company')
+    new_photo = customer_data.get('photo')  # New photo filename or empty if not updated
+
+    # If a new photo is provided, use it; otherwise, retain the existing photo
+    if new_photo:
+        photo_filename = new_photo
+    else:
+        # Query the current photo filename from the database if no new photo is provided
+        try:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT UserPhoto FROM Users WHERE UserID = ?", (user_id,))
+            current_photo = cursor.fetchone()
+            conn.close()
+
+            if current_photo:
+                photo_filename = current_photo[0]  # Use the existing photo filename
+            else:
+                return jsonify({'error': 'User not found'}), 404
+
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+    # Update the customer data in the database using the `update_customer_in_db` function
+    try:
+        update_customer_in_db(user_id, name, address, phone, email, age, gender, insurance_company, photo_filename)
+        return jsonify({'message': 'Customer updated successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/delete_customer', methods=['POST'])
+def delete_customer():
+    data = request.json  # Get the JSON payload from the frontend
+    user_id = data.get('userID')
+
+    # Ensure that the UserID is provided
+    if not user_id:
+        return jsonify({'error': 'UserID is required'}), 400
+
+    # Update the "Active" status of the customer to "False" instead of deleting
+    try:
+        mark_customer_inactive(user_id)
+        return jsonify({'message': 'Customer marked as inactive successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~METHODS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
@@ -399,7 +557,47 @@ def check_password_meets_requirements(password):
         return False
     return True
 
+def GetCheckoutValues(reservedCars):
+    total = 0
+    checkout_html = ""
+    totalData = []
+    types = []
+    
+    for car in reservedCars:
+        car = car.strip().split(",")
+        if len(car) == 2:
+            vehicle = get_vehicle_by_id(car[0])
+            rate = get_rates_by_vehicle_type(vehicle[4])[0]
+            numDays = getNumDays(car[1])
+            total += numDays * rate[3]
+            if vehicle[4] not in types:
+                types.append(vehicle[4])
+                checkout_html += Markup("""
+                                        <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">{type} Rate </strong><strong>${rate:.2f}/day</strong></li>
+                                        """).format(rate=rate[3], type=vehicle[4])
+    totalData.append(f"{total:.2f}")
+    totalData.append(f"{total * 0.07:.2f}")
+    totalData.append(f"{float(totalData[0]) + float(totalData[1]):.2f}")
+    return checkout_html, totalData
 
+def getNumDays(dateRange):
+    # dateRange format example "12/01/2024 - 12/15/2024"
+    dates = dateRange.split(" - ")
+    try:
+        start_date = datetime.strptime(dates[0], "%m/%d/%Y")
+        end_date = datetime.strptime(dates[1], "%m/%d/%Y")
+    except ValueError:
+        raise ValueError("Invalid date format. Please use MM/DD/YYYY - MM/DD/YYYY format.")
+    
+    # Calculate the number of days between the two dates
+    delta = (end_date - start_date).days
+
+    # Ensure the number of days is non-negative
+    if delta < 0:
+        raise ValueError("End date must be after start date.")
+    
+    return delta
+    
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SQL QUERIES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 
 # Retrieve user data by email from the database
@@ -476,14 +674,72 @@ def get_location_by_id(location_id):
     conn.close()
     return location
 
-# Uncomment this route to test user creation; useful for initializing the database
-"""
-@app.route("/test")
-def run_test():
-    create_user("Taylor J. Brown", "123 ABC St. Fayetteville, NC 28314", 9168737714, "tbrown145@broncos.uncfsu.edu", 27, "M", "Test123abc")
-    create_user("Admin", "123 ABC St. Fayetteville, NC 28314", 9105554545, "admin@admin.com", 99, "M", "Test123abc", 1)
-    return redirect(url_for("index"))
-"""
+def get_rates_by_vehicle_type(vehicle_type):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM RentalPlans WHERE Type = ?", (vehicle_type,))
+    rates = cursor.fetchall()
+    conn.close()
+    return rates
+
+def insert_customer(customer_data, photo_filename, username, password):
+    try:
+        # Open a connection to the database
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Ensure you are passing all the values as expected
+        cursor.execute('''
+            INSERT INTO Users (Name, Address, Phone, Email, Age, Gender, InsuranceCompany, UserPhoto, Username, Password)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            customer_data['name'],              # 1
+            customer_data['address'],           # 2
+            customer_data['phone'],             # 3
+            customer_data['email'],             # 4
+            customer_data['age'],               # 5
+            customer_data['gender'],            # 6
+            customer_data['insurance_company'], # 7
+            photo_filename,                     # 8
+            username,                           # 9
+            password                            # 10
+        ))
+
+        # Commit changes and close the connection
+        conn.commit()
+        conn.close()
+
+    except Exception as e:
+        # Handle any exception during the insert process
+        print(f"Error inserting customer: {e}")
+        raise
+
+def update_customer_in_db(user_id, name, address, phone, email, age, gender, insurance_company, photo_filename):
+    # Connect to the database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Update the customer details in the database
+    cursor.execute('''
+        UPDATE Users
+        SET Name = ?, Address = ?, Phone = ?, Email = ?, Age = ?, Gender = ?, InsuranceCompany = ?, UserPhoto = ?
+        WHERE UserID = ?
+    ''', (name, address, phone, email, age, gender, insurance_company, photo_filename, user_id))
+
+    conn.commit()
+    conn.close()
+
+def mark_customer_inactive(user_id):
+    # Connect to the database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Update the Active status to False for the given UserID
+    cursor.execute("UPDATE Users SET Active = ? WHERE UserID = ?", ("False", user_id))
+
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
 
 # Main entry point for the Flask app
 if __name__ == '__main__':

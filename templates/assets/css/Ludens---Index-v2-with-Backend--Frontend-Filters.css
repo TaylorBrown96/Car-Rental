@@ -1,0 +1,125 @@
+#ipi-table > thead > tr, #ipi-table > thead > tr > td {
+  font-size: .9em;
+  font-weight: 400;
+  background: #51596a;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+#ipi-table > tbody > tr > td {
+  max-height: 200px;
+  vertical-align: middle!important;
+}
+
+.checkboxHover:hover {
+  cursor: pointer;
+}
+
+.btnNoBorders, .btnNoBorders:focus, .btnNoBorders:active {
+  outline: none;
+  -moz-outline-style: none;
+}
+
+.btnMaterial {
+  overflow: hidden !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+  display: inline-block !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  vertical-align: middle !important;
+  border: none !important;
+  padding: 0 16px !important;
+  white-space: nowrap !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #212121v !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  -webkit-border-radius: 2px !important;
+  -moz-border-radius: 2px !important;
+  border-radius: 2px !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  -webkit-transition: all 0.2s ease !important;
+  -moz-transition: all 0.2s ease !important;
+  -o-transition: all 0.2s ease !important;
+  transition: all 0.2s ease !important;
+  -ms-touch-action: manipulation !important;
+  touch-action: manipulation !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+}
+
+.btn-flat {
+  font-weight: 400;
+  color: #212121;
+  background-color: transparent;
+}
+
+.btn-flat:hover, .btn-flat:focus, .btn-flat.focus, .btn-flat:active, .btn-flat.active {
+  color: #212121;
+}
+
+.btn-flat.primary {
+  color: #3F51B5;
+}
+
+.btn-flat.accent {
+  color: #EC407A;
+}
+
+.btn-flat.success {
+  color: #009688;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.card {
+  font-weight: 400;
+  border: 0;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.card-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.25rem;
+}
+
+input, input:focus, input:active {
+  outline: none !important;
+  -moz-outline-style: none !important;
+  box-shadow: none !important;
+}
+

@@ -1,226 +1,187 @@
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-    />
-    <title>Products - Car Rental</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/swiper-icons.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='fonts/fontawesome-all.min.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/Filter.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/Hero-Features-icons.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/Ludens---Index-v2-with-Backend--Frontend-Filters.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/Projects-Grid-images.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/Simple-Slider-swiper-bundle.min.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/Simple-Slider.css')}}"
-    />
-  </head>
 
-  <body>
-    <nav
-      class="navbar navbar-expand-md sticky-top navbar-shrink py-3"
-      id="mainNav"
-    >
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/products"
-          ><span
-            class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon"
-            style="background: #A599B5;"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icon-tabler-car-suv"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-              <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-              <path
-                d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"
-              ></path>
-              <path d="M10 9v-4"></path>
-              <path d="M2 7v4"></path>
-              <path
-                d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"
-              ></path>
-              <path d="M5 12v-3h13"></path></svg></span
-          ><span
-            style="font-size: 40px;font-weight: bold;text-align: center;--bs-dark: #2e2f2f;--bs-dark-rgb: 46,47,47;"
-            >Car Rental Service</span
-          ></a
-        ><button
-          data-bs-toggle="collapse"
-          class="navbar-toggler"
-          data-bs-target="#navcol-1"
-        >
-          <span class="visually-hidden">Toggle navigation</span
-          ><span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navcol-1">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item"></li>
-            <li class="nav-item"></li>
-            <li class="nav-item"></li>
-            <li class="nav-item"></li>
-          </ul>
-          <a
-            class="btn btn-secondary shadow"
-            role="button"
-            id="cartbutton"
-            style="--bs-primary: #A599B5;--bs-primary-rgb: 165,153,181;--bs-secondary: #ACBDBA;--bs-secondary-rgb: 172,189,186;background: #acbdba;border-style: none;margin-right: 10px;"
-            href="/cart"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              class="bi bi-cart-fill"
-            >
-              <path
-                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
-              ></path></svg></a
-          ><button
-            class="btn btn-primary shadow"
-            type="button"
-            data-bs-target="#signup"
-            data-bs-toggle="modal"
-            style="margin-right: 10px;"
-          >
-            Account</button
-          ><a href="/logout"
-            ><button class="btn btn-danger shadow" type="button">
-              Logout
-            </button></a
-          >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Products - Car Rental</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/swiper-icons.css">
+    <link rel="stylesheet" href="assets/css/Filter.css">
+    <link rel="stylesheet" href="assets/css/Hero-Features-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/Ludens---Index-v2-with-Backend--Frontend-Filters.css">
+    <link rel="stylesheet" href="assets/css/Projects-Grid-images.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider-swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider.css">
+    <link rel="stylesheet" href="assets/css/Tamplate-SB-Admin-on-BSS.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                        <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                        <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"></path>
+                        <path d="M10 9v-4"></path>
+                        <path d="M2 7v4"></path>
+                        <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"></path>
+                        <path d="M5 12v-3h13"></path>
+                    </svg></span><span style="font-size: 40px;font-weight: bold;text-align: center;--bs-dark: #2e2f2f;--bs-dark-rgb: 46,47,47;">Car Rental Service</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                </ul><a class="btn btn-secondary shadow" role="button" id="cartbutton" style="--bs-primary: #A599B5;--bs-primary-rgb: 165,153,181;--bs-secondary: #ACBDBA;--bs-secondary-rgb: 172,189,186;background: #acbdba;border-style: none;margin-right: 10px;" href="shopping-cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart-fill">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"></path>
+                    </svg></a><button class="btn btn-primary shadow" type="button" data-bs-target="#signup" data-bs-toggle="modal" style="margin-right: 10px;">Account</button><a class="btn btn-danger shadow" role="button" href="login.html" data-bs-target="#signup" data-bs-toggle="modal">Sign out</a>
+            </div>
         </div>
-      </div>
     </nav>
     <section class="py-5">
-      <div class="container py-4 py-xl-5">
-        <div class="row mb-5">
-          <div class="col-md-8 col-xl-6 text-center mx-auto">
-            <h2 style="font-size: 65px;text-align: center;font-weight: bold;">
-              Available Vehicles
-            </h2>
-          </div>
+        <div class="container py-4 py-xl-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2 style="font-size: 65px;text-align: center;font-weight: bold;">Available Vehicles</h2>
+                </div>
+            </div><div class="filter" style="margin-bottom: 15px;">
+    <form>
+        <select>
+            <option value="">Type</option>
+            <option value="sedan">Sedan</option>
+            <option value="truck">Truck</option>
+            <option value="cargo">Cargo Van</option>
+            <option value="other">Other</option>
+        </select>
+        <select>
+            <option value="">Make</option>
+            <option value="ACURA">ACURA</option>
+            <option value="ASTON MARTIN">ASTON MARTIN</option>
+            <option value="AUDI">AUDI</option>
+            <option value="BENTLEY">BENTLEY</option>
+            <option value="BMW">BMW</option>
+            <option value="BUICK">BUICK</option>
+            <option value="CADILLAC">CADILLAC</option>
+            <option value="CHEVROLET">CHEVROLET</option>
+            <option value="CHRYSLER">CHRYSLER</option>
+            <option value="DODGE">DODGE</option>
+            <option value="FERRARI">FERRARI</option>
+            <option value="FORD">FORD</option>
+            <option value="GMC">GMC</option>
+            <option value="HONDA">HONDA</option>
+            <option value="HUMMER">HUMMER</option>
+            <option value="HYUNDAI">HYUNDAI</option>
+            <option value="INFINITI">INFINITI</option>
+            <option value="ISUZU">ISUZU</option>
+            <option value="JAGUAR">JAGUAR</option>
+            <option value="JEEP">JEEP</option>
+            <option value="KIA">KIA</option>
+            <option value="LAMBORGHINI">LAMBORGHINI</option>
+            <option value="LAND ROVER">LAND ROVER</option>
+            <option value="LEXUS">LEXUS</option>
+            <option value="LINCOLN">LINCOLN</option>
+            <option value="LOTUS">LOTUS</option>
+            <option value="MASERATI">MASERATI</option>
+            <option value="MAYBACH">MAYBACH</option>
+            <option value="MAZDA">MAZDA</option>
+            <option value="MERCEDES-BENZ">MERCEDES-BENZ</option>
+            <option value="MERCURY">MERCURY</option>
+            <option value="MINI">MINI</option>
+            <option value="MITSUBISHI">MITSUBISHI</option>
+            <option value="NISSAN">NISSAN</option>
+            <option value="PONTIAC">PONTIAC</option>
+            <option value="PORSCHE">PORSCHE</option>
+            <option value="ROLLS-ROYCE">ROLLS-ROYCE</option>
+            <option value="SAAB">SAAB</option>
+            <option value="SATURN">SATURN</option>
+            <option value="SUBARU">SUBARU</option>
+            <option value="SUZUKI">SUZUKI</option>
+            <option value="TOYOTA">TOYOTA</option>
+            <option value="VOLKSWAGEN">VOLKSWAGEN</option>
+            <option value="VOLVO">VOLVO</option>
+        </select>
+        <select>
+            <option value="">Drive Train</option>
+            <option value="fourWheel">4x4</option>
+            <option value="twoWheel">2x4</option>
+            <option value="allWheel">AWD</option>
+        </select>
+        <select>
+            <option value="">Transmission</option>
+            <option value="manual">Manual</option>
+            <option value="automatic">Automatic</option>
+        </select>
+        <select>
+            <option value="">Location</option>
+            <option value="location1">Location1</option>
+            <option value="location2">Location2</option>
+            <option value="location3">Location3</option>
+        </select>
+        <button class="btn btn-success" style="margin-bottom: 5px;">Apply</button>
+    </form>
+</div>
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                <div class="col">
+                    <div><img class="rounded img-fluid d-block w-100 fit-cover" style="height: 400px;width: 400px !important;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                        <div class="py-4">
+                            <h4>0000 Make Model</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div><img class="rounded img-fluid d-block w-100 fit-cover" style="height: 400px;width: 400px !important;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                        <div class="py-4">
+                            <h4>0000 Make Model</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div><img class="rounded img-fluid d-block w-100 fit-cover" style="height: 400px;width: 400px !important;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                        <div class="py-4">
+                            <h4>0000 Make Model</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div><img class="rounded img-fluid d-block w-100 fit-cover" style="height: 400px;width: 400px !important;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                        <div class="py-4">
+                            <h4>0000 Make Model</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="filter" style="margin-bottom: 15px;">
-          <form method="POST" action="{{ url_for('products') }}">
-            <select name="type">
-              {{ options['type_options']|safe }}
-            </select>
-            <select name="make">
-              {{ options['make_options']|safe }}
-            </select>
-            <select name="model">
-              {{ options['model_options']|safe }}
-            </select>
-            <select name="drive">
-              {{ options['drive_options']|safe }}
-            </select>
-            <select name="transmission">
-              {{ options['transmission_options']|safe }}
-            </select>
-            <select name="location">
-              {{ options['location_options']|safe }}
-            </select>
-            <button
-              class="btn btn-success"
-              style="margin-bottom: 5px;"
-              type="submit"
-            >
-              Apply
-            </button>
-          </form>
-        </div>
-        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-          {{ vehicle_html }}
-        </div>
-      </div>
     </section>
-    <footer
-      class="bg-primary-gradient"
-      style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;"
-    >
-      <div
-        class="container py-4 py-lg-5"
-        style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;"
-      >
-        <hr />
-        <div
-          class="text-muted d-flex justify-content-between align-items-center pt-3"
-        >
-          <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item"></li>
-            <li class="list-inline-item"></li>
-            <li class="list-inline-item"></li>
-            <li class="list-inline-item"></li>
-          </ul>
+    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
+        <div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
+            <hr>
+            <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"></li>
+                </ul>
+            </div>
         </div>
-      </div>
     </footer>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
-    <script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/theme.js')}}"></script>
-  </body>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/bold-and-bright.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="assets/js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js"></script>
+    <script src="assets/js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js"></script>
+    <script src="assets/js/Simple-Slider-swiper-bundle.min.js"></script>
+    <script src="assets/js/Simple-Slider.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
 </html>
