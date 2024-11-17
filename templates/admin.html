@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Projects - Car Rental</title>
+    <title>Admin - Car Rental</title>
 
     <!-- Correct paths using url_for to serve static files -->
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
@@ -25,51 +25,41 @@
 
 <body>
     <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                        <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                        <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"></path>
-                        <path d="M10 9v-4"></path>
-                        <path d="M2 7v4"></path>
-                        <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"></path>
-                        <path d="M5 12v-3h13"></path>
-                    </svg></span><span style="font-size: 40px;font-weight: bold;text-align: center;--bs-dark: #2e2f2f;--bs-dark-rgb: 46,47,47;">Car Rental Service</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                </ul><a class="btn btn-secondary shadow" role="button" id="cartbutton" style="--bs-primary: #A599B5;--bs-primary-rgb: 165,153,181;--bs-secondary: #ACBDBA;--bs-secondary-rgb: 172,189,186;background: #acbdba;border-style: none;margin-right: 10px;" href="shopping-cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart-fill">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"></path>
-                    </svg></a><button class="btn btn-primary shadow" type="button" data-bs-target="#signup" data-bs-toggle="modal" style="margin-right: 10px;">Account</button><a class="btn btn-danger shadow" role="button" href="login.html" data-bs-target="#signup" data-bs-toggle="modal">Sign out</a>
-            </div>
-        </div>
-    </nav>
-    <section class="py-5">
-        <div>
-            <nav class="navbar navbar-expand bg-dark sb-topnav navbar-dark">
-                <div class="container-fluid"><button class="btn btn-link btn-sm link-light order-md-1" id="sidebarToggle" type="button"></button><a class="navbar-brand" href="#">CRS-ADMIN Portal</a>
-                    <form class="d-none d-md-inline-block order-2 ms-auto me-0 me-md-3 my-2 my-md-0">
-                        <div class="input-group">
-                            <div class="input-group-append"></div>
-                        </div>
-                    </form>
-                    <ul class="navbar-nav d-flex order-3 ms-auto ms-md-0">
-                        <li class="nav-item d-flex d-sm-flex d-md-none justify-content-center align-items-center justify-content-sm-center" style="margin-right: 7px;">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fa fa-search" style="font-size: 25px;margin-right: 0px;"></i> </a>
-                                <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
-                            </div>
-                        </li>
-                        <li class="nav-item d-flex justify-content-center align-items-center">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle active" aria-expanded="false" data-bs-toggle="dropdown" href="#">&nbsp;</a>
-                                <div class="dropdown-menu dropdown-menu-end text-start shadow" style="margin-top: 16px;"><a class="dropdown-item" href="#">Pengaturan</a><a class="dropdown-item" href="#">Log Aktivitas</a><a class="dropdown-item" href="#">Pelanggaran</a>
-                                    <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Keluar</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+		<div class="container"><a class="navbar-brand d-flex align-items-center" href="/products"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+              <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+              <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"></path>
+              <path d="M10 9v-4"></path>
+              <path d="M2 7v4"></path>
+              <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"></path>
+              <path d="M5 12v-3h13"></path>
+          </svg></span><span style="font-size: 40px;font-weight: bold;text-align: center;--bs-dark: #2e2f2f;--bs-dark-rgb: 46,47,47;">Car Rental Service</span></a>
+			<button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="navcol-1">
+				<ul class="navbar-nav mx-auto">
+					<li class="nav-item"></li>
+					<li class="nav-item"></li>
+					<li class="nav-item"></li>
+					<li class="nav-item"></li>
+				</ul>
+				<a class="btn btn-secondary shadow" role="button" id="cartbutton" style="--bs-primary: #A599B5;--bs-primary-rgb: 165,153,181;--bs-secondary: #ACBDBA;--bs-secondary-rgb: 172,189,186;background: #acbdba;border-style: none;margin-right: 10px;" href="/cart">
+					<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart-fill">
+						<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"></path>
+					</svg>
+				</a>
+                {{ admin }}
+				<a href="/logout">
+					<button class="btn btn-danger shadow" type="button">Logout</button>
+				</a>
+			</div>
+		</div>
+	</nav>
+    <section>
+        <div class="py-5">
+            <nav class="navbar navbar-expand bg-dark sb-topnav navbar-dark" style="margin-top: -2%;">
+                <div class="container-fluid"><button class="btn btn-link btn-sm link-light order-md-1" id="sidebarToggle" type="button"></button><p style="color: #fff;font-size: 2rem;cursor: default;">CRS-ADMIN Portal</p>
+
                 </div>
                 </nav>
                 <div id="layoutSidenav">
@@ -79,10 +69,10 @@
                                 <div class="nav">
                                     <div></div>
                                     <div>
-                                        <div class="sb-sidenav-menu-heading"><span>admin options</span></div>
+                                        <div class="sb-sidenav-menu-heading" style="cursor: default;"><span>admin options</span></div>
                                         <!-- Customer Management Accordion Button -->
                                         <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="collapseLayouts" data-bs-toggle="collapse" data-bs-target="#collapseLayouts">
-                                            <div class="sb-nav-link-icon"><i class="fa fa-gear"></i></div><span>Customer Management</span>
+                                            <div class="sb-nav-link-icon" style="cursor: default;"><i class="fa fa-gear"></i></div><span>Customer Management</span>
                                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                                         </a>
                                         <div id="collapseLayouts" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -92,12 +82,6 @@
                                                 <a class="nav-link" id="deleteCustomer" href="#">Delete Customer</a>
                                             </div>
                                         </div>
-
-                                        <!-- Generate Report Button -->
-                                        <a class="nav-link" href="/generate_report">
-                                            <div class="sb-nav-link-icon"><i class="fa fa-file-text"></i></div><span>Generate Report</span>
-                                        </a>
-
                                     </div>
                                     <div>
                                         <div id="collapse2" class="collapse" aria-labelledby="heading2" data-bs-parent="#sidenavAccordion">
@@ -116,14 +100,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Generate Report Button -->
+                                    <a class="nav-link" href="/generate_report" type="button" style="none">
+                                        <div class="sb-nav-link-icon"><i class="fa fa-file-text"></i></div><span>Generate Report</span>
+                                    </a>
                                 </div>
                             </div>
                             <div class="sb-sidenav-footer">
-                                <div class="small"><span>Logged as : David Aprilio</span></div>
+                                <div class="small"><span>Logged as : {{ Username }}</span></div>
                             </div>
                         </div>
                     </div>
-                    <div id="layoutSidenav_content" style="margin-left: 25px; margin-top: 25px;">
+                    <div id="layoutSidenav_content" style="margin-left: 25px; margin-top: 25px; cursor: default; padding: 0px 6% 0px;" >
                         <main id="customerDataContent">
                         <h2><strong>Welcome to the Admin Panel</strong></h2>
                         <p>Select an option from the sidebar to manage customer accounts.</p>
@@ -247,7 +235,7 @@
                                     <div class="mb-3">
                                         <label for="userIDInput" class="form-label">Customer ID</label>
                                         <input type="text" class="form-control" id="userIDInput" placeholder="Enter customer ID" >
-                                        <button type="button" id="fetchCustomerBtn" class="btn btn-info mt-3">Fetch Customer Data</button>
+                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Customer Data</button>
                                     </div>
 
                                     <!-- Name -->
@@ -307,7 +295,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-warning">Modify Customer</button>
+                                    <button type="submit" class="btn btn-info">Modify Customer</button>
                                 </form>
                             `;
 
@@ -421,7 +409,7 @@
                                     <div class="mb-3">
                                         <label for="userIDInput" class="form-label">Customer ID</label>
                                         <input type="text" class="form-control" id="userIDInput" placeholder="Enter customer ID" required>
-                                        <button type="button" id="fetchCustomerBtn" class="btn btn-info mt-3">Fetch Customer Data</button>
+                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Customer Data</button>
                                     </div>
 
                                     <!-- Display Customer Data -->
@@ -512,7 +500,7 @@
                                                     <p>Are you sure you want to deactivate this customer record?</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-light"  style="background-color: #f5f5f5;" data-bs-dismiss="modal">Cancel</button>
                                                     <button type="button" class="btn btn-danger" id="confirmDeactivateBtn">Deactivate</button>
                                                 </div>
                                             </div>
@@ -565,12 +553,6 @@
             <hr>
             <div class="text-muted d-flex justify-content-between align-items-center pt-3">
                 <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item"></li>
-                    <li class="list-inline-item"></li>
-                    <li class="list-inline-item"></li>
-                    <li class="list-inline-item"></li>
-                </ul>
             </div>
         </div>
     </footer>
