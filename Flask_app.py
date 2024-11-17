@@ -349,7 +349,7 @@ def create_customer():
 
         # Add dummy values for Username and Password
         username = customer_data['email'].split('@')[0]  # Use email prefix as username
-        password = "defaultpassword"  # Dummy password
+        password = hashlib.sha3_512("defaultpassword".encode()).hexdigest()  # Dummy password
 
         try:
             # Call insert_customer function with the required arguments
