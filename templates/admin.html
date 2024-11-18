@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Admin - Car Rental</title>
+
+    <!-- Correct paths using url_for to serve static files -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/swiper-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Filter.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Hero-Features-icons.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Ludens---Index-v2-with-Backend--Frontend-Filters.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Projects-Grid-images.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider-swiper-bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Tamplate-SB-Admin-on-BSS.css') }}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
+		<div class="container"><a class="navbar-brand d-flex align-items-center" href="/products"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+              <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+              <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"></path>
+              <path d="M10 9v-4"></path>
+              <path d="M2 7v4"></path>
+              <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"></path>
+              <path d="M5 12v-3h13"></path>
+          </svg></span><span style="font-size: 40px;font-weight: bold;text-align: center;--bs-dark: #2e2f2f;--bs-dark-rgb: 46,47,47;">Car Rental Service</span></a>
+			<button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="navcol-1">
+				<ul class="navbar-nav mx-auto">
+					<li class="nav-item"></li>
+					<li class="nav-item"></li>
+					<li class="nav-item"></li>
+					<li class="nav-item"></li>
+				</ul>
+				<a class="btn btn-secondary shadow" role="button" id="cartbutton" style="--bs-primary: #A599B5;--bs-primary-rgb: 165,153,181;--bs-secondary: #ACBDBA;--bs-secondary-rgb: 172,189,186;background: #acbdba;border-style: none;margin-right: 10px;" href="/cart">
+					<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart-fill">
+						<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"></path>
+					</svg>
+				</a>
+                {{ admin }}
+				<a href="/logout">
+					<button class="btn btn-danger shadow" type="button">Logout</button>
+				</a>
+			</div>
+		</div>
+	</nav>
+    <section>
+        <div class="py-5">
+            <nav class="navbar navbar-expand bg-dark sb-topnav navbar-dark" style="margin-top: -2%;">
+                <div class="container-fluid"><button class="btn btn-link btn-sm link-light order-md-1" id="sidebarToggle" type="button"></button><p style="color: #fff;font-size: 2rem;cursor: default;">CRS-ADMIN Portal</p>
+
+                </div>
+                </nav>
+                <div id="layoutSidenav">
+                    <div id="layoutSidenav_nav">
+                        <div id="sidenavAccordion" class="sb-sidenav accordion sb-sidenav-dark">
+                            <div class="sb-sidenav-menu">
+                                <div class="nav">
+                                    <div></div>
+                                    <div>
+                                        <div class="sb-sidenav-menu-heading" style="cursor: default;"><span>admin options</span></div>
+                                        <!-- Customer Management Accordion Button -->
+                                        <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="collapseLayouts" data-bs-toggle="collapse" data-bs-target="#collapseLayouts">
+                                            <div class="sb-nav-link-icon" style="cursor: default;"><i class="fa fa-gear"></i></div><span>Customer Management</span>
+                                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                                        </a>
+                                        <div id="collapseLayouts" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                            <div class="sb-sidenav-menu-nested nav">
+                                                <a class="nav-link" id="createCustomer" href="#">Create New Customer</a>
+                                                <a class="nav-link" id="modifyCustomer" href="#">Modify Existing</a>
+                                                <a class="nav-link" id="deleteCustomer" href="#">Delete Customer</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div id="collapse2" class="collapse" aria-labelledby="heading2" data-bs-parent="#sidenavAccordion">
+                                            <div id="sidenavAccordionPages" class="sb-sidenav-menu-nested nav accordion">
+                                                <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="pagesCollapseAuth" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth">
+                                                    <span>Menu Item</span>
+                                                    <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                                                </a>
+                                                <div id="pagesCollapseAuth" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                                    <div class="sb-sidenav-menu-nested nav">
+                                                        <a class="nav-link" href="#">Menu Item</a>
+                                                        <a class="nav-link" href="#">Menu Item</a>
+                                                        <a class="nav-link" href="#">Menu Item</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Generate Report Button -->
+                                    <a class="nav-link" href="/generate_report" type="button" style="none">
+                                        <div class="sb-nav-link-icon"><i class="fa fa-file-text"></i></div><span>Generate Report</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="sb-sidenav-footer">
+                                <div class="small"><span>Logged as : {{ Username }}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="layoutSidenav_content" style="margin-left: 25px; margin-top: 25px; cursor: default; padding: 0px 6% 0px;" >
+                        <main id="customerDataContent">
+                        <h2><strong>Welcome to the Admin Panel</strong></h2>
+                        <p>Select an option from the sidebar to manage customer accounts.</p>
+                    </main><script>
+                        // Listen for clicks on "Create New Customer"
+                        document.getElementById('createCustomer').addEventListener('click', function() {
+                            document.getElementById('customerDataContent').innerHTML = `
+                                <form id="createCustomerForm">
+                                    <h3>Create New Customer</h3>
+
+                                    <!-- Name -->
+                                    <div class="mb-3">
+                                        <label for="customerName" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="customerName" placeholder="Enter customer name" >
+                                    </div>
+
+                                    <!-- Address -->
+                                    <div class="mb-3">
+                                        <label for="customerAddress" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="customerAddress" placeholder="Enter customer address" >
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="mb-3">
+                                        <label for="customerPhone" class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter customer phone number" >
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="mb-3">
+                                        <label for="customerEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter customer email" >
+                                    </div>
+
+                                    <!-- Age -->
+                                    <div class="mb-3">
+                                        <label for="customerAge" class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="customerAge" placeholder="Enter customer age" >
+                                    </div>
+
+                                    <!-- Gender -->
+                                    <div class="mb-3">
+                                        <label for="customerGender" class="form-label">Gender</label>
+                                        <select class="form-select" id="customerGender" >
+                                            <option value="" disabled selected>Select gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Insurance Company -->
+                                    <div class="mb-3">
+                                        <label for="insuranceCompany" class="form-label">Insurance Company</label>
+                                        <input type="text" class="form-control" id="insuranceCompany" placeholder="Enter insurance company" >
+                                    </div>
+
+                                    <!-- User Photo -->
+                                    <div class="mb-3">
+                                        <label for="userPhoto" class="form-label">DL Photo</label>
+                                        <input type="file" class="form-control" id="userPhoto" accept="image/*" >
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Create Customer</button>
+                                </form>
+                            `;
+
+                        // Add event listener for form submission
+                            document.getElementById('createCustomerForm').addEventListener('submit', function(event) {
+                                event.preventDefault();  // Prevent default form submission
+
+                                // Collect form data
+                                const customerData = new FormData();
+                                customerData.append('name', document.getElementById('customerName').value);
+                                customerData.append('address', document.getElementById('customerAddress').value);
+                                customerData.append('phone', document.getElementById('customerPhone').value);
+                                customerData.append('email', document.getElementById('customerEmail').value);
+                                customerData.append('age', document.getElementById('customerAge').value);
+                                customerData.append('gender', document.getElementById('customerGender').value);
+                                customerData.append('insurance_company', document.getElementById('insuranceCompany').value);
+                                customerData.append('photo', document.getElementById('userPhoto').files[0]);
+
+                                // Validate the form (ensure no field is empty)
+                                if (!customerData.get('name') || !customerData.get('address') || !customerData.get('phone') ||
+                                    !customerData.get('email') || !customerData.get('age') || !customerData.get('gender') ||
+                                    !customerData.get('insurance_company') || !customerData.get('photo')) {
+                                    // Show the error modal if validation fails
+                                    showErrorModal('Error: All fields must be completed to modify successfully.');
+                                    return;  // Prevent submission if validation fails
+                                }
+                                // Send the form data to the Flask backend using fetch with FormData
+                                fetch('/create_customer', {
+                                    method: 'POST',
+                                    body: customerData  // Send the FormData object with the file included
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message) {
+                                        alert(data.message);  // Show success message
+                                        // Reset form after successful submission
+                                        document.getElementById('createCustomerForm').reset();
+                                    } else {
+                                        alert('Error: ' + data.error);  // Show error message
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('There was an error creating the customer.');
+                                });
+                            });
+                        });
+
+
+                         // Listen for clicks on "Modify Customer Data"
+                        document.getElementById('modifyCustomer').addEventListener('click', function() {
+                            document.getElementById('customerDataContent').innerHTML = `
+                                <form id="modifyCustomerForm">
+                                    <h3>Modify Customer Data</h3>
+
+                                    <!-- Customer ID (Input for searching) -->
+                                    <div class="mb-3">
+                                        <label for="userIDInput" class="form-label">Customer ID</label>
+                                        <input type="text" class="form-control" id="userIDInput" placeholder="Enter customer ID" >
+                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Customer Data</button>
+                                    </div>
+
+                                    <!-- Name -->
+                                    <div class="mb-3">
+                                        <label for="customerName" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="customerName" placeholder="Enter customer name" required disabled>
+                                    </div>
+
+                                    <!-- Address -->
+                                    <div class="mb-3">
+                                        <label for="customerAddress" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="customerAddress" placeholder="Enter customer address" >
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="mb-3">
+                                        <label for="customerPhone" class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter customer phone number" >
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="mb-3">
+                                        <label for="customerEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter customer email" >
+                                    </div>
+
+                                    <!-- Age -->
+                                    <div class="mb-3">
+                                        <label for="customerAge" class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="customerAge" placeholder="Enter customer age" >
+                                    </div>
+
+                                    <!-- Gender -->
+                                    <div class="mb-3">
+                                        <label for="customerGender" class="form-label">Gender</label>
+                                        <select class="form-select" id="customerGender" >
+                                            <option value="" disabled selected>Select gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Insurance Company -->
+                                    <div class="mb-3">
+                                        <label for="insuranceCompany" class="form-label">Insurance Company</label>
+                                        <input type="text" class="form-control" id="insuranceCompany" placeholder="Enter insurance company" >
+                                    </div>
+
+                                    <!-- User Photo -->
+                                    <div class="mb-3">
+                                        <label for="userPhoto" class="form-label">User Photo</label>
+                                        <input type="file" class="form-control" id="userPhoto" accept="image/*">
+                                        <!-- Display current photo if available -->
+                                        <div id="currentPhoto">
+                                            <img id="photoPreview" src="" alt="Current photo" style="max-width: 500px; max-height: 500px; margin-top: 10px;">  <!-- Increase size here -->
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-info">Modify Customer</button>
+                                </form>
+                            `;
+
+                            // Fetch customer data based on UserID input
+                            document.getElementById('fetchCustomerBtn').addEventListener('click', function() {
+                                const userID = document.getElementById('userIDInput').value;
+
+                                // Validate input
+                                if (!userID) {
+                                    alert('Please enter a customer ID to search.');
+                                    return;
+                                }
+
+                                // Fetch customer data from backend using the customer UserID
+                                fetch('/get_customer_by_userid', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ userID: userID })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.customer) {
+                                        // Populate form fields with customer data
+                                        document.getElementById('customerName').value = data.customer.name;
+                                        document.getElementById('customerAddress').value = data.customer.address;
+                                        document.getElementById('customerPhone').value = data.customer.phone;
+                                        document.getElementById('customerEmail').value = data.customer.email;
+                                        document.getElementById('customerAge').value = data.customer.age;
+                                        document.getElementById('customerGender').value = data.customer.gender;
+                                        document.getElementById('insuranceCompany').value = data.customer.insurance_company;
+
+                                        // Display the current customer photo if available
+                                        if (data.customer.photo_url) {
+                                            document.getElementById('photoPreview').src = data.customer.photo_url;
+                                            document.getElementById('currentPhoto').style.display = 'block';
+                                        } else {
+                                            document.getElementById('currentPhoto').style.display = 'none';
+                                        }
+
+                                        // Disable the name field since it's not editable
+                                        document.getElementById('customerName').disabled = true;
+                                    } else {
+                                        alert('Customer not found');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('There was an error fetching customer data.');
+                                });
+                            });
+
+                            // Handle form submission for modifying customer data
+                            document.getElementById('modifyCustomerForm').addEventListener('submit', function(event) {
+                                event.preventDefault();
+
+                                // Collect the form data
+                                const updatedCustomerData = {
+                                    userID: document.getElementById('userIDInput').value,  // Include the UserID
+                                    name: document.getElementById('customerName').value,
+                                    address: document.getElementById('customerAddress').value,
+                                    phone: document.getElementById('customerPhone').value,
+                                    email: document.getElementById('customerEmail').value,
+                                    age: document.getElementById('customerAge').value,
+                                    gender: document.getElementById('customerGender').value,
+                                    insurance_company: document.getElementById('insuranceCompany').value,
+                                    photo: document.getElementById('userPhoto').files[0] ? document.getElementById('userPhoto').files[0].name : ''
+                                };
+
+                                // Validate the form (ensure no field is empty)
+                                if (!updatedCustomerData.userID || !updatedCustomerData.name || !updatedCustomerData.address || 
+                                    !updatedCustomerData.phone || !updatedCustomerData.email || !updatedCustomerData.age || 
+                                    !updatedCustomerData.gender || !updatedCustomerData.insurance_company) {
+                                    
+                                    // Show the error modal if validation fails
+                                    showErrorModal('Error: All fields must be completed to modify successfully.');
+                                    return;  // Prevent submission if validation fails
+                                }
+
+                                // Send the updated data to the backend
+                                fetch('/modify_customer', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(updatedCustomerData)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message) {
+                                        alert(data.message);
+                                    } else {
+                                        alert('Error: ' + data.error);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('There was an error modifying the customer data.');
+                                });
+                            });
+                        });
+
+                        // Listen for clicks on "Delete Customer Data"
+                        document.getElementById('deleteCustomer').addEventListener('click', function () {
+                            document.getElementById('customerDataContent').innerHTML = `
+                                <form id="deleteCustomerForm">
+                                    <h3>Deactivate Customer Data</h3>
+
+                                    <!-- Customer ID (Input for searching) -->
+                                    <div class="mb-3">
+                                        <label for="userIDInput" class="form-label">Customer ID</label>
+                                        <input type="text" class="form-control" id="userIDInput" placeholder="Enter customer ID" required>
+                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Customer Data</button>
+                                    </div>
+
+                                    <!-- Display Customer Data -->
+                                    <div id="customerDetails" style="display: none;">
+                                        <div class="mb-3">
+                                            <label for="customerName" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="customerName" placeholder="Customer name" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="customerAddress" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="customerAddress" placeholder="Customer address" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="customerPhone" class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" id="customerPhone" placeholder="Customer phone" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="customerEmail" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="customerEmail" placeholder="Customer email" disabled>
+                                        </div>
+                                        <!-- Add more fields as needed for confirmation -->
+
+                                        <!-- Deactivate Button -->
+                                        <button type="button" class="btn btn-danger mt-3" id="deactivateCustomerBtn">Deactivate Customer</button>
+                                    </div>
+                                </form>
+                            `;
+
+                            // Fetch customer data based on UserID input
+                            document.getElementById('fetchCustomerBtn').addEventListener('click', function () {
+                                const userID = document.getElementById('userIDInput').value;
+
+                                // Validate input
+                                if (!userID) {
+                                    alert('Please enter a customer ID to search.');
+                                    return;
+                                }
+
+                                // Fetch customer data from backend using the customer UserID
+                                fetch('/get_customer_by_userid', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ userID: userID })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.customer) {
+                                            // Populate form fields with customer data for confirmation
+                                            document.getElementById('customerName').value = data.customer.name;
+                                            document.getElementById('customerAddress').value = data.customer.address;
+                                            document.getElementById('customerPhone').value = data.customer.phone;
+                                            document.getElementById('customerEmail').value = data.customer.email;
+
+                                            // Show customer details
+                                            document.getElementById('customerDetails').style.display = 'block';
+                                        } else {
+                                            alert('Customer not found');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('There was an error fetching customer data.');
+                                    });
+                            });
+
+                            // Handle deactivation of customer data
+                            document.getElementById('deactivateCustomerBtn').addEventListener('click', function () {
+                                const userID = document.getElementById('userIDInput').value;
+
+                                // Show a confirmation modal before deactivating
+                                showDeactivateModal(userID);
+                            });
+
+                            // Function to show the deactivate confirmation modal
+                            function showDeactivateModal(userID) {
+                                // Create the modal HTML structure
+                                const modalHTML = `
+                                    <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deactivateModalLabel">Confirm Deactivation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to deactivate this customer record?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light"  style="background-color: #f5f5f5;" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger" id="confirmDeactivateBtn">Deactivate</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+
+                                // Add the modal HTML to the body
+                                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                                // Show the modal
+                                const deactivateModal = new bootstrap.Modal(document.getElementById('deactivateModal'));
+                                deactivateModal.show();
+
+                                // Add event listener for confirm deactivate button
+                                document.getElementById('confirmDeactivateBtn').addEventListener('click', function () {
+                                    // Call the delete endpoint
+                                    fetch('/delete_customer', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ userID: userID })
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.message) {
+                                                alert(data.message);
+                                                deactivateModal.hide(); // Close the modal
+                                                document.getElementById('deleteCustomerForm').reset(); // Reset the form
+                                                document.getElementById('customerDetails').style.display = 'none'; // Hide the customer details section
+                                            } else {
+                                                alert('Error: ' + data.error);
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            alert('There was an error deactivating the customer data.');
+                                        });
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
+        <div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
+            <hr>
+            <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bs-init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bold-and-bright.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Simple-Slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>
