@@ -1,5 +1,6 @@
 import sqlite3
 import hashlib
+from datetime import datetime
 
 
 # Define database path and dictionaries for vehicle makes and models
@@ -59,6 +60,56 @@ def filter_vehicles(type, make, model, drive, transmission, location):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Vehicles WHERE Type LIKE ? AND Make LIKE ? AND Model LIKE ? AND DriveTrain LIKE ? AND Transmission LIKE ? AND LocationID LIKE ?", (type, make, model, drive, transmission, location))
+    data = cursor.fetchall()
+    conn.close()
+    
+    return data
+
+
+def filter_vehicles_by_dates(type, make, model, drive, transmission, location, start_date, end_date):
+    # If filter criteria are empty, set them to wildcard for SQL query
+    if type == "":
+        type = "%"
+    if make == "":
+        make = "%"
+    if model == "":
+        model = "%"
+    if drive == "":
+        drive = "%"
+    if transmission == "":
+        transmission = "%"
+    if location == "":
+        location = "%"
+
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Query to exclude vehicles with any overlapping reservations explicitly
+    query = """
+    SELECT V.*
+    FROM Vehicles V
+    WHERE V.Type LIKE ?
+      AND V.Make LIKE ?
+      AND V.Model LIKE ?
+      AND V.DriveTrain LIKE ?
+      AND V.Transmission LIKE ?
+      AND V.LocationID LIKE ?
+      AND NOT EXISTS (
+        SELECT 1
+        FROM Reservations R
+        WHERE R.VehicleID = V.VehicleID
+          AND (
+            DATE(substr(R.ReserveStartDate, 7, 4) || '-' || substr(R.ReserveStartDate, 1, 2) || '-' || substr(R.ReserveStartDate, 4, 2)) <= DATE(?)
+            AND DATE(substr(R.ReserveEndDate, 7, 4) || '-' || substr(R.ReserveEndDate, 1, 2) || '-' || substr(R.ReserveEndDate, 4, 2)) >= DATE(?)
+          )
+      )
+    """
+    
+    # Convert the incoming dates to YYYY-MM-DD format for SQL comparison
+    formatted_start_date = f"{start_date[6:]}-{start_date[:2]}-{start_date[3:5]}"
+    formatted_end_date = f"{end_date[6:]}-{end_date[:2]}-{end_date[3:5]}"
+    
+    cursor.execute(query, (type, make, model, drive, transmission, location, formatted_end_date, formatted_start_date))
     data = cursor.fetchall()
     conn.close()
     
@@ -339,3 +390,67 @@ def mark_vehicle_inactive(vehicle_id):
     # Commit and close the connection
     conn.commit()
     conn.close()
+    
+    
+def make_reservation_db(vehicleid, planid, customerid, startdate, enddate, location, userID):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Reservations (VehicleID, UserID, PlanID, ReserveStartDate, ReserveEndDate, PickUpLocation, DropOffLocation, CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (vehicleid, userID, planid, startdate, enddate, location, location, customerid))
+    conn.commit()
+    conn.close()
+    
+    return True
+
+
+def make_invoice_db(planID, ReservationID, VehicleID, CustomerID):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Invoice (PlanID, ReservationID, VehicleID, CustomerID) VALUES (?, ?, ?, ?)", (planID, ReservationID, VehicleID, CustomerID))
+    conn.commit()
+    conn.close()
+    
+    return True
+
+
+def insert_customer(name, address, phone, email, filename):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Customers (Name, Address, Phone, Email, DLPhoto) VALUES (?, ?, ?, ?, ?)", (name, address, phone, email, filename))
+    conn.commit()
+    conn.close()
+    
+
+def get_customerid_by_email(email):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT CustomerID FROM Customers WHERE Email = ?", (email,))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data
+
+
+def get_planid_by_vehicleid(vehicleid):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT rp.PlanID 
+        FROM RentalPlans rp
+        JOIN Vehicles v ON rp.Type = v.Type
+        WHERE v.VehicleID = ?
+    """, (vehicleid,))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data[0] if data else None
+
+
+def get_reservationid_by_customerid(customerid, vehicleid, startdate, enddate):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT ReservationID FROM Reservations WHERE CustomerID = ? AND VehicleID = ? AND ReserveStartDate = ? AND ReserveEndDate = ?", (customerid, vehicleid, startdate, enddate))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data[0] if data else None
+                 

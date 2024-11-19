@@ -7,7 +7,7 @@ from datetime import datetime  # For date calculations
 import json  # For JSON data handling
 import os  # For file operations
 from werkzeug.utils import secure_filename # For secure file uploads
-import report # For generating PDF reports
+import generate # For generating PDF reports
 from utils import *  # For utility functions
 from sqlQueries import *  # For database queries
 
@@ -19,6 +19,13 @@ app.secret_key = 'super secret key'  # Secret key for session management
 # Configure upload folder and allowed extensions
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Allowed extensions are already defined in the config
+def allowed_file(filename):
+    """
+    Check if the file extension is allowed.
+    """
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
    
 # Route for login page
@@ -42,17 +49,37 @@ def products():
     selected_transmission = request.form.get('transmission', '') if request.method == 'POST' else ""
     selected_location = request.form.get('location', '') if request.method == 'POST' else ""
     
-    # Retrieve filtered or all vehicle data
-    vehicle_data = (
-        filter_vehicles(
+    selected_start_date = request.form.get('start_date', '') if request.method == 'POST' else ""
+    if selected_start_date != "": start_date = datetime.strptime(selected_start_date, "%Y-%m-%d").strftime("%m/%d/%Y")
+    
+    selected_end_date = request.form.get('end_date', '') if request.method == 'POST' else ""
+    if selected_end_date != "": end_date = datetime.strptime(selected_end_date, "%Y-%m-%d").strftime("%m/%d/%Y")
+    
+    if selected_start_date != "" and selected_end_date != "": 
+        print(f"Start Date: {start_date}, End Date: {end_date}")
+        # Retrieve filtered or all vehicle data with availability between selected dates
+        vehicle_data = filter_vehicles_by_dates(
             selected_type,
             selected_make,
             selected_model,
             selected_drive,
             selected_transmission,
-            selected_location
+            selected_location,
+            start_date,
+            end_date
         ) if request.method == 'POST' else get_vehicle_information()
-    )
+    else:
+        # Retrieve filtered or all vehicle data
+        vehicle_data = (
+            filter_vehicles(
+                selected_type,
+                selected_make,
+                selected_model,
+                selected_drive,
+                selected_transmission,
+                selected_location
+            ) if request.method == 'POST' else get_vehicle_information()
+        )
 
     # Generate HTML for vehicle display and options for filters
     vehicle_html = generate_vehicle_html(vehicle_data)
@@ -74,8 +101,6 @@ def vehicle_page(vehicle_id):
     vehicle = get_vehicle_by_id(vehicle_id)
     if not vehicle:
         return "Vehicle not found", 404
-    
-    print(vehicle[10])
 
     # Structure data for vehicle display page
     vehicle_data = {
@@ -301,7 +326,7 @@ def cart():
                     <td class="border-0 align-middle"><strong>{numDays}</strong></td>
                     <td class="border-0 align-middle"><a href="/remove/{ReserveID}" class="text-dark"><i class="fa fa-trash"></i></a></td>
                     </tr>"""
-            ).format(Photo=vehicle[10].split("ㄹ")[0], year=vehicle[3], make=vehicle[1], model=vehicle[2], type=vehicle[4], dates=car[1], VehicleID=vehicle[0], numDays=getNumDays(car[1]), ReserveID=car[2])
+            ).format(Photo=vehicle[10].split("ㄹ")[0], year=vehicle[3], make=vehicle[1], model=vehicle[2], type=vehicle[4], dates=car[1], VehicleID=vehicle[0], numDays=getNumDays(car[1])+1, ReserveID=car[2])
             
     checkout_html, totalData = GetCheckoutValues(reservedCars)
     
@@ -319,7 +344,7 @@ def generate_report():
     if session["Usertype"] != 1:
         return redirect(url_for("products"))
     
-    return report.generate()
+    return generate.vehicleReport()
 
 
 @app.route('/create_customer', methods=['POST'])
@@ -625,15 +650,101 @@ def delete_vehicle():
     except Exception as e:
         return jsonify({'error': str(e)}), 500  
     
-    
-    
-# Allowed extensions are already defined in the config
-def allowed_file(filename):
-    """
-    Check if the file extension is allowed.
-    """
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
+@app.route('/makereservation', methods=['POST', 'GET'])
+def make_reservation():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    
+    if not session.get("reservedCars"):
+        return redirect(url_for("products"))
+    
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        address = request.form['address']
+
+        
+        reservedCars = session["reservedCars"].strip().split(";")
+        driversLicensePhoto = request.files['driversLicensePhoto']
+        if driversLicensePhoto.filename == '':
+            return jsonify({'error': 'No selected photo'}), 400
+        
+        if driversLicensePhoto and allowed_file(driversLicensePhoto.filename):
+            filename = name + phone + ".jpg"
+            os.makedirs(os.path.join(app.config['UPLOAD_FOLDER']+"driversLicense/"), exist_ok=True)
+            driversLicensePhoto.save(os.path.join(app.config['UPLOAD_FOLDER']+"driversLicense/", filename))
+        else:
+            return jsonify({'error': 'Invalid photo file format'}), 400
+        
+        insert_customer(name, address, phone, email, filename)
+        
+        customerid = get_customerid_by_email(email)
+        
+        for car in reservedCars:
+            car = car.strip().split(",")
+            if len(car) == 3:
+                vehicle_id = car[0]
+                daterange = car[1]
+                
+                startdate = datetime.strptime(daterange.split(" - ")[0], "%m/%d/%Y").strftime("%m/%d/%Y")
+                enddate = datetime.strptime(daterange.split(" - ")[1], "%m/%d/%Y").strftime("%m/%d/%Y")
+                
+                planID = get_planid_by_vehicleid(int(vehicle_id))
+                location = get_vehicle_by_id(int(vehicle_id))[11]
+                success = make_reservation_db(int(vehicle_id), planID, customerid[0], startdate, enddate, location, userID=session['UserID'])
+                if not success:
+                    return jsonify({'error': 'Failed to make reservation'}), 500
+                
+        for car in reservedCars:
+            car = car.strip().split(",")
+            if len(car) == 3:
+                daterange = car[1]
+                startdate = datetime.strptime(daterange.split(" - ")[0], "%m/%d/%Y").strftime("%m/%d/%Y")
+                enddate = datetime.strptime(daterange.split(" - ")[1], "%m/%d/%Y").strftime("%m/%d/%Y")
+                
+                reservationid = get_reservationid_by_customerid(customerid[0], car[0], startdate, enddate)
+                planID = get_planid_by_vehicleid(car[0])
+                print(f"ReservationID: {reservationid}, PlanID: {planID}")
+                success = make_invoice_db(planID, reservationid, car[0], customerid[0])
+                
+                if not success:
+                    return jsonify({'error': 'Failed to make invoice'}), 500
+                
+        session["reservedCars"] = ""
+        return redirect(url_for("products"))
+    else:
+        cart = ""
+        reservedCars = session["reservedCars"].strip().split(";")
+        
+        for car in reservedCars:
+            car = car.strip().split(",")
+            if len(car) == 3:
+                vehicle = get_vehicle_by_id(car[0])
+                cart += Markup(
+                    """<tr>
+                            <th scope="row" class="border-0">
+                                <div class="p-2">
+                                <img src="{Photo}" alt="" width="70" class="img-fluid rounded shadow-sm">
+                                <div class="ml-3 d-inline-block align-middle">
+                                    <h5 class="mb-0"> <a href="/vehicle/{VehicleID}" class="text-dark d-inline-block align-middle">{year} {make} {model}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Type: {type}</span>
+                                </div>
+                                </div>
+                            </th>
+                            <td class="border-0 align-middle"><strong>{dates}</strong></td>
+                            <td class="border-0 align-middle"><strong>{numDays}</strong></td>
+                        </tr>"""
+                ).format(Photo=vehicle[10].split("ㄹ")[0], year=vehicle[3], make=vehicle[1], model=vehicle[2], type=vehicle[4], dates=car[1], VehicleID=vehicle[0], numDays=getNumDays(car[1])+1)
+                
+        if session["Usertype"] == 1:
+            return render_template("make-reservation.html", cart=cart, admin=admin_nav())
+        return render_template("make-reservation.html", cart=cart)
+
+
+
+# Vehicle reservation pdf generation
+#return rentalAgreement(reservation_id)
 
 # Main entry point for the Flask app
 if __name__ == '__main__':

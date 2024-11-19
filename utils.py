@@ -207,7 +207,7 @@ def GetCheckoutValues(reservedCars):
         if len(car) == 3:
             vehicle = get_vehicle_by_id(car[0])
             rate = get_rates_by_vehicle_type(vehicle[4])[0]
-            numDays = getNumDays(car[1])
+            numDays = getNumDays(car[1])+1
             total += numDays * rate[3]
             if vehicle[4] not in types:
                 types.append(vehicle[4])
