@@ -20,6 +20,7 @@ app.secret_key = 'super secret key'  # Secret key for session management
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
+   
 # Route for login page
 @app.route("/")
 def index():
@@ -562,8 +563,52 @@ def delete_customer():
         return jsonify({'message': 'Customer marked as inactive successfully!'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
-    
+
+
+@app.route("/set_session/<int:user_id>")
+def set_session(user_id):
+    session["UserID"] = user_id
+    print(f"Session after setting: {dict(session)}")  # Debug log
+    return jsonify({"message": f"Session set for UserID {user_id}"})
+
+  
+@app.route("/debug_session")
+def debug_session():
+    return jsonify(dict(session))
+
+  
+# Route to pick up a car
+@app.route("/pickup/<int:user_id>", methods=['POST'])
+def pickup_car_route(user_id):
+    if "UserID" not in session or session["UserID"] != user_id:
+        return jsonify({'error': 'Unauthorized access'}), 403
+
+    try:
+        success = pick_up_car(user_id)
+        if success:
+            return jsonify({'message': 'Car picked up successfully!'}), 200
+        else:
+            return jsonify({'error': 'No valid reservation found for pickup'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+      
+# Route to drop off a car
+@app.route("/dropoff/<int:user_id>", methods=['POST'])
+def dropoff_car_route(user_id):
+    if "UserID" not in session or session["UserID"] != user_id:
+        return jsonify({'error': 'Unauthorized access'}), 403
+
+    try:
+        success = drop_off_car(user_id)
+        if success:
+            return jsonify({'message': 'Car dropped off successfully!'}), 200
+        else:
+            return jsonify({'error': 'No valid reservation found for dropoff'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+      
+      
 @app.route('/delete_vehicle', methods=['POST'])
 def delete_vehicle():
     data = request.json  # Get the JSON payload from the frontend
@@ -578,7 +623,8 @@ def delete_vehicle():
         mark_vehicle_inactive(vehicle_id)
         return jsonify({'message': 'Vehicle marked as inactive successfully!'}), 200
     except Exception as e:
-        return jsonify({'error': str(e)}), 500    
+        return jsonify({'error': str(e)}), 500  
+    
     
     
 # Allowed extensions are already defined in the config
@@ -587,7 +633,8 @@ def allowed_file(filename):
     Check if the file extension is allowed.
     """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-    
+
+
 # Main entry point for the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
