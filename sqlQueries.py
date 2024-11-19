@@ -145,6 +145,65 @@ def insert_customer(customer_data, photo_filename, username, password):
         # Handle any exception during the insert process
         print(f"Error inserting customer: {e}")
         raise
+   
+   
+def determine_service_id(mileage):
+    mileage = int(mileage)
+    if mileage <= 5000:
+        return 1
+    elif mileage <= 10000:
+        return 2
+    elif mileage <= 15000:
+        return 3
+    elif mileage <= 25000:
+        return 4
+    elif mileage <= 50000:
+        return 5
+    else:
+        return 9
+    
+    
+def insert_vehicle(vehicle_data):
+    try:
+        serviceid = determine_service_id(vehicle_data['mileage'])
+        # Open a connection to the database
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Ensure you are passing all the values as expected
+        cursor.execute('''
+            INSERT INTO Vehicles (Make, Model, Year, Type, Mileage, Transmission, NumDoors, 
+            RepairStatus, Available, Photos, LocationID, ServiceID, KeyFeatures, Description,
+            DriveTrain)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            vehicle_data['make'],              # 1
+            vehicle_data['model'],           # 2
+            vehicle_data['year'],             # 3
+            vehicle_data['type'],             # 4
+            vehicle_data['mileage'],               # 5
+            vehicle_data['transmission'],            # 6
+            vehicle_data['numdoors'], # 7
+            vehicle_data['repairstatus'], # 8
+            vehicle_data['available'],
+            vehicle_data['photos'], # 11
+            vehicle_data['locationid'], # 11
+            serviceid, # 12
+            vehicle_data['keyfeatures'], # 13
+            vehicle_data['description'], # 14
+            vehicle_data['drivetrain'] # 15
+            
+        ))
+
+        # Commit changes and close the connection
+        conn.commit()
+        conn.close()
+        
+
+    except Exception as e:
+        # Handle any exception during the insert process
+        print(f"Error adding vehicle: {e}")
+        raise
 
 
 def update_customer_in_db(user_id, name, address, phone, email, age, gender, insurance_company, photo_filename):
@@ -161,6 +220,23 @@ def update_customer_in_db(user_id, name, address, phone, email, age, gender, ins
 
     conn.commit()
     conn.close()
+    
+def update_vehicle_in_db(vehicle_id, make, model, year, type, mileage, transmission, numdoors, repairstatus, available,  photos, locationid, serviceid, keyfeatures, description, drivetrain):
+    # Connect to the database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Update the vehicle details in the database
+    cursor.execute('''
+        UPDATE Vehicles
+        SET Make = ?, Model = ?, Year = ?, Type = ?, Mileage = ?, Transmission = ?, NumDoors = ?, 
+        RepairStatus = ?, Available = ?, Photos = ?, LocationID = ?, ServiceID = ?, KeyFeatures = ?, 
+        Description = ?, DriveTrain = ?
+        WHERE VehicleID = ?
+    ''', (make, model, year, type, mileage, transmission, numdoors, repairstatus, available, photos, locationid, serviceid, keyfeatures, description, drivetrain, vehicle_id))
+
+    conn.commit()
+    conn.close()
 
 
 def mark_customer_inactive(user_id):
@@ -170,6 +246,19 @@ def mark_customer_inactive(user_id):
 
     # Update the Active status to False for the given UserID
     cursor.execute("UPDATE Users SET Active = ? WHERE UserID = ?", ("False", user_id))
+
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
+    
+
+def mark_vehicle_inactive(vehicle_id):
+    # Connect to the database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Update the Active status to False for the given UserID
+    cursor.execute("UPDATE Vehicles SET Active = ? WHERE VehicleID = ?", ("False", vehicle_id))
 
     # Commit and close the connection
     conn.commit()

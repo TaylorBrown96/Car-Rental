@@ -213,7 +213,7 @@ def main():
     reset_database()
     #insert_locations_data()
     insert_vehicle_data()
-    insert_service_intervals_data()
+    #insert_service_intervals_data()
 
 
 if __name__ == "__main__":
