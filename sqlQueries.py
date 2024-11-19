@@ -205,6 +205,82 @@ def insert_vehicle(vehicle_data):
         print(f"Error adding vehicle: {e}")
         raise
 
+# Function to update car availability in the database
+def update_car_status(cursor, car_id, availability):
+    cursor.execute("UPDATE Vehicles SET Available = ? WHERE VehicleID = ?", (availability, car_id))
+   
+
+def pick_up_car(user_id):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    try:
+        # Check if the reservation's PickUpLocation matches the vehicle's LocationID
+        cursor.execute("""
+            SELECT r.VehicleID, r.PickUpLocation, v.LocationID
+            FROM Reservations r
+            JOIN Vehicles v ON r.VehicleID = v.VehicleID
+            WHERE r.UserID = ? AND r.PickUpLocation = v.LocationID AND v.Available = 'Yes'
+            LIMIT 1
+        """, (user_id,))
+        reservation = cursor.fetchone()
+
+        if reservation:
+            vehicle_id, pickup_location, location_id = reservation
+
+            # Update the vehicle's availability
+            update_car_status(cursor, vehicle_id, "No")
+
+            # Commit changes
+            conn.commit()
+            print(f"Vehicle {vehicle_id} picked up from location {pickup_location}")
+            return True
+        else:
+            print(f"No valid reservation found for UserID {user_id} with matching pickup location")
+            return False
+    finally:
+        conn.close()
+# Function to check and update mileage of a vehicle for 
+
+# Function to drop off car
+def drop_off_car(user_id):
+    conn = sqlite3.connect(db_path, timeout=10)  # Add timeout
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            SELECT VehicleID, DropOffLocation
+            FROM Reservations
+            WHERE UserID = ? AND PickUpLocation IS NOT NULL AND DropOffLocation IS NOT NULL
+            LIMIT 1
+        """, (user_id,))
+        reservation = cursor.fetchone()
+
+        print(f"Query Result: {reservation}")  # Debugging output
+
+        if reservation:
+            vehicle_id, dropoff_location_id = reservation
+
+            # Update vehicle's location to match drop-off location
+            cursor.execute("""
+                UPDATE Vehicles
+                SET LocationID = ?
+                WHERE VehicleID = ?
+            """, (dropoff_location_id, vehicle_id))
+
+            print(f"Updated Vehicle LocationID to {dropoff_location_id}")
+
+            # Mark vehicle as available
+            update_car_status(cursor, vehicle_id, "Yes")
+
+            # Commit the transaction
+            conn.commit()
+            print(f"Vehicle {vehicle_id} dropped off successfully at location {dropoff_location_id}.")
+            return True
+        else:
+            print(f"No valid reservation found for UserID {user_id}")
+            return False
+    finally:
+        conn.close()
+
 
 def update_customer_in_db(user_id, name, address, phone, email, age, gender, insurance_company, photo_filename):
     # Connect to the database
