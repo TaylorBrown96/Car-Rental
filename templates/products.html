@@ -126,16 +126,56 @@
             </select>
             <select name="location">
               {{ options['location_options']|safe }}
-            </select>
+            </select><br />
+        
+            <!-- Date Range Picker -->
+            <label for="start_date">Start Date:</label>
+            <input
+              type="date"
+              id="start_date"
+              name="start_date"
+              style="width: 200px;"
+              min=""
+              onchange="updateEndDate()"
+            />
+            <label for="end_date">End Date:</label>
+            <input
+              type="date"
+              id="end_date"
+              name="end_date"
+              style="width: 200px;"
+              min=""
+            />
+        
             <button
               class="btn btn-success"
               style="margin-bottom: 5px;"
               type="submit"
             >
-              Apply
+              Apply Filters
             </button>
           </form>
         </div>
+        
+        <script>
+          // Function to set the minimum date for the date inputs
+          function setMinDate() {
+            const today = new Date().toISOString().split("T")[0];
+            document.getElementById("start_date").setAttribute("min", today);
+            document.getElementById("end_date").setAttribute("min", today);
+          }
+        
+          // Function to update the 'min' attribute of the end date based on the start date
+          function updateEndDate() {
+            const startDate = document.getElementById("start_date").value;
+            if (startDate) {
+              document.getElementById("end_date").setAttribute("min", startDate);
+            }
+          }
+        
+          // Initialize min dates on page load
+          window.onload = setMinDate;
+        </script>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
           {{ vehicle_html }}
         </div>

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-	<title>Shopping Cart - Car Rental</title>
+	<title>Make Reservation - Car Rental</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/swiper-icons.css')}}">
@@ -19,8 +19,8 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider-swiper-bundle.min.css')}}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider.css')}}"> </head>
 
-<body style="background: #CDDDDD;">
-	<nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
+<body>
+    <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
 		<div class="container"><a class="navbar-brand d-flex align-items-center" href="/products"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
@@ -51,81 +51,72 @@
 			</div>
 		</div>
 	</nav>
-	<section class="py-5">
-		<h2 style="font-size: 65px;text-align: center;font-weight: bold;">Your Cart</h2>
-		<div class="container py-5">
-			<div class="row mx-auto">
-				<div class="col">
-					<div class="shopping-cart">
-						<div class="px-4 px-lg-0">
-							<div class="pb-5">
-								<div class="container">
-									<div class="row">
-										<div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
-											<!-- Shopping cart table -->
-											<div class="table-responsive"> {% if cart_html == "Your cart is empty." %}
-												<div style="display: flex; justify-content: center; align-items: center; height: 10vh;">
-													<h3 style="font-size: 4rem;">😶‍🌫️ Your cart is empty 😶‍🌫️</h3> </div> {% else %}
-												<table class="table">
-													<thead>
-														<tr>
-															<th scope="col" class="border-0 bg-light">
-																<div class="p-2 px-3 text-uppercase">Product</div>
-															</th>
-															<th scope="col" class="border-0 bg-light">
-																<div class="py-2 text-uppercase">Date Range</div>
-															</th>
-															<th scope="col" class="border-0 bg-light">
-																<div class="py-2 text-uppercase">Num Days</div>
-															</th>
-															<th scope="col" class="border-0 bg-light">
-																<div class="py-2 text-uppercase">Remove</div>
-															</th>
-														</tr>
-													</thead>
-													<tbody> {{ cart_html|safe }} </tbody>
-												</table> {% endif %} </div>
-											<!-- End -->
-										</div>
-									</div>
-									<div class="row py-5 p-4 bg-white rounded shadow-sm">
-										<div class="col-lg-6">
-											
-										</div> {% if cart_html == "Your cart is empty." %}
-										<div class="col-lg-12">
-											<div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
-											<div class="p-4">
-												<p class="font-italic mb-4">Reservations depend on vehicle availability. Specific models are not guaranteed. A valid license, credit card, and compliance with terms are required.</p>
-												<ul class="list-unstyled mb-4">
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Rate </strong><strong>$0/day</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Proccessing Fee </strong><strong>$0.00</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$0.00</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax (7% NC)</strong><strong>$0.00</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-														<h5 class="font-weight-bold">$0.00</h5> </li>
-												</ul><a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Place Reservation</a> </div>
-										</div> {% else %}
-										<div class="col-lg-12">
-											<div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
-											<div class="p-4">
-												<p class="font-italic mb-4">Reservations depend on vehicle availability. Specific models are not guaranteed. A valid license, credit card, and compliance with terms are required.</p>
-												<ul class="list-unstyled mb-4"> {{ Rates }}
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Proccessing Fee </strong><strong>$30.00</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>${{ subtotal }}</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax (7% NC)</strong><strong>${{ tax }}</strong></li>
-													<li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-														<h5 class="font-weight-bold">${{ total }}</h5> </li>
-												</ul><a href="/makereservation" class="btn btn-dark rounded-pill py-2 btn-block">Place Reservation</a> </div>
-										</div> {% endif %} </div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
+    <section>
+        <div class="container" style="margin-top: 25px;">
+            <div class="row">
+                <div class="col-md-6" style="width: 60%;"><div class="shopping-cart">
+                    <div class="px-4 px-lg-0">
+
+                    <div class="pb-5">
+                        <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-3">
+
+                            <!-- Shopping cart table -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="p-2 px-3 text-uppercase">Vehicle</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Date Range</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Num Days</div>
+                                    </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ cart }}
+                                </tbody>
+                                </table>
+                            </div>
+                            <!-- End -->
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="width: 40%;">
+                    <div class="card mb-5">
+                        <div class="card-body p-sm-5">
+                            <h2 class="text-center mb-4">Customer Information</h2>
+                            <form method="POST" action="{{ url_for('make_reservation') }}" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <input class="form-control" type="text" id="name-2" name="name" placeholder="Name">
+                                </div>
+                                <div class="mb-3">
+                                    <input class="form-control" type="email" id="email-2" name="email" placeholder="Email">
+                                    <input class="form-control" type="number" id="email-3" placeholder="Phone #" style="margin-top: 14px;" name="phone">
+                                    <input class="form-control" type="text" id="email-1" name="address" placeholder="Address" style="margin-top: 14px;">
+                                    <label class="form-label" style="margin-top: 10px;margin-left: 10px;">Drivers License Photo</label>
+                                    <input class="form-control" type="file" name="driversLicensePhoto">
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary d-block w-100" type="submit">Make Reservation</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
 		<div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
 			<hr>
 			<div class="text-muted d-flex justify-content-between align-items-center pt-3">
