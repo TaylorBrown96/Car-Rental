@@ -71,15 +71,26 @@
                                     <div>
                                         <div class="sb-sidenav-menu-heading" style="cursor: default;"><span>admin options</span></div>
                                         <!-- Customer Management Accordion Button -->
-                                        <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="collapseLayouts" data-bs-toggle="collapse" data-bs-target="#collapseLayouts">
+                                        <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="Customercollapse" data-bs-toggle="collapse" data-bs-target="#Customercollapse">
                                             <div class="sb-nav-link-icon" style="cursor: default;"><i class="fa fa-gear"></i></div><span>Customer Management</span>
                                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                                         </a>
-                                        <div id="collapseLayouts" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <div id="Customercollapse" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                             <div class="sb-sidenav-menu-nested nav">
                                                 <a class="nav-link" id="createCustomer" href="#">Create New Customer</a>
                                                 <a class="nav-link" id="modifyCustomer" href="#">Modify Existing</a>
                                                 <a class="nav-link" id="deleteCustomer" href="#">Delete Customer</a>
+                                            </div>
+                                        </div>
+                                        <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="collapseLayouts" data-bs-toggle="collapse" data-bs-target="#collapseLayouts">
+                                            <div class="sb-nav-link-icon" style="cursor: default;"><i class="fa fa-gear"></i></div><span>Vehicle Management</span>
+                                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                                        </a>
+                                        <div id="collapseLayouts" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                            <div class="sb-sidenav-menu-nested nav">
+                                                <a class="nav-link" id="createCar" href="#">Create New Vehicle</a>
+                                                <a class="nav-link" id="modifyCar" href="#">Modify Existing</a>
+                                                <a class="nav-link" id="deleteCar" href="#">Delete Vehicle</a>
                                             </div>
                                         </div>
                                     </div>
@@ -539,6 +550,923 @@
                                         .catch(error => {
                                             console.error('Error:', error);
                                             alert('There was an error deactivating the customer data.');
+                                        });
+                                });
+                            }
+                        });
+                    </script>
+                    <script>
+                        // Listen for clicks on "Create New vehicle"
+                        document.getElementById('createCar').addEventListener('click', function() {
+                            document.getElementById('customerDataContent').innerHTML = `
+                                <form id="createVehicleForm">
+                                    <h3>Create New Vehicle</h3>
+                    
+                                    <!-- Make -->
+                                    <div class="mb-3">
+                                        <label for="vehicleMake" class="form-label">Make</label>
+                                        <select class="form-select" id="vehicleMake">
+                                            <option value="" disabled selected>Select make</option>
+                                            <option value="Acura">Acura</option>
+                                            <option value="Alfa Romeo">Alfa Romeo</option>
+                                            <option value="Audi">Audi</option>
+                                            <option value="BMW">BMW</option>
+                                            <option value="Buick">Buick</option>
+                                            <option value="Cadillac">Cadillac</option>
+                                            <option value="Chevrolet">Chevrolet</option>
+                                            <option value="Chrysler">Chrysler</option>
+                                            <option value="Dodge">Dodge</option>
+                                            <option value="Fiat">Fiat</option>
+                                            <option value="Ford">Ford</option>
+                                            <option value="Genesis">Genesis</option>
+                                            <option value="GMC">GMC</option>
+                                            <option value="Honda">Honda</option>
+                                            <option value="Hyundai">Hyundai</option>
+                                            <option value="Infiniti">Infiniti</option>
+                                            <option value="Jaguar">Jaguar</option>
+                                            <option value="Jeep">Jeep</option>
+                                            <option value="Kia">Kia</option>
+                                            <option value="Land Rover">Land Rover</option>
+                                            <option value="Lexus">Lexus</option>
+                                            <option value="Lincoln">Lincoln</option>
+                                            <option value="Mazda">Mazda</option>
+                                            <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                            <option value="Mini">Mini</option>
+                                            <option value="Mitsubishi">Mitsubishi</option>
+                                            <option value="Nissan">Nissan</option>
+                                            <option value="Porsche">Porsche</option>
+                                            <option value="Ram">Ram</option>
+                                            <option value="Subaru">Subaru</option>
+                                            <option value="Tesla">Tesla</option>
+                                            <option value="Toyota">Toyota</option>
+                                            <option value="Volkswagen">Volkswagen</option>
+                                            <option value="Volvo">Volvo</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Model -->
+                                    <div class="mb-3">
+                                        <label for="vehicleModel" class="form-label">Model</label>
+                                        <select class="form-select" id="vehicleModel">
+                                            <option value="" disabled selected>Select model</option>
+                                            <optgroup label="Acura">
+                                                <option value="ILX">ILX</option>
+                                                <option value="MDX">MDX</option>
+                                                <option value="RDX">RDX</option>
+                                                <option value="TLX">TLX</option>
+                                                <option value="NSX">NSX</option>
+                                            </optgroup>
+                                            <optgroup label="Alfa Romeo">
+                                                <option value="Giulia">Giulia</option>
+                                                <option value="Stelvio">Stelvio</option>
+                                                <option value="4C">4C</option>
+                                                <option value="Tonale">Tonale</option>
+                                            </optgroup>
+                                            <optgroup label="Audi">
+                                                <option value="A3">A3</option>
+                                                <option value="A4">A4</option>
+                                                <option value="A6">A6</option>
+                                                <option value="A8">A8</option>
+                                                <option value="Q3">Q3</option>
+                                                <option value="Q5">Q5</option>
+                                                <option value="Q7">Q7</option>
+                                                <option value="Q8">Q8</option>
+                                                <option value="e-tron">e-tron</option>
+                                            </optgroup>
+                                            <optgroup label="BMW">
+                                                <option value="2 Series">2 Series</option>
+                                                <option value="3 Series">3 Series</option>
+                                                <option value="4 Series">4 Series</option>
+                                                <option value="5 Series">5 Series</option>
+                                                <option value="7 Series">7 Series</option>
+                                                <option value="X1">X1</option>
+                                                <option value="X3">X3</option>
+                                                <option value="X5">X5</option>
+                                                <option value="X7">X7</option>
+                                                <option value="i3">i3</option>
+                                                <option value="i8">i8</option>
+                                            </optgroup>
+                                            <optgroup label="Buick">
+                                                <option value="Encore">Encore</option>
+                                                <option value="Encore GX">Encore GX</option>
+                                                <option value="Envision">Envision</option>
+                                                <option value="Enclave">Enclave</option>
+                                                <option value="Regal">Regal</option>
+                                            </optgroup>
+                                            <optgroup label="Cadillac">
+                                                <option value="CT4">CT4</option>
+                                                <option value="CT5">CT5</option>
+                                                <option value="XT4">XT4</option>
+                                                <option value="XT5">XT5</option>
+                                                <option value="XT6">XT6</option>
+                                                <option value="Escalade">Escalade</option>
+                                            </optgroup>
+                                            <optgroup label="Chevrolet">
+                                                <option value="Silverado 1500">Silverado 1500</option>
+                                                <option value="Silverado 2500HD">Silverado 2500HD</option>
+                                                <option value="Equinox">Equinox</option>
+                                                <option value="Traverse">Traverse</option>
+                                                <option value="Blazer">Blazer</option>
+                                                <option value="Malibu">Malibu</option>
+                                                <option value="Tahoe">Tahoe</option>
+                                                <option value="Suburban">Suburban</option>
+                                                <option value="Camaro">Camaro</option>
+                                                <option value="Corvette">Corvette</option>
+                                            </optgroup>
+                                            <optgroup label="Chrysler">
+                                                <option value="300">300</option>
+                                                <option value="Pacifica">Pacifica</option>
+                                                <option value="Voyager">Voyager</option>
+                                            </optgroup>
+                                            <optgroup label="Dodge">
+                                                <option value="Challenger">Challenger</option>
+                                                <option value="Charger">Charger</option>
+                                                <option value="Durango">Durango</option>
+                                                <option value="Hornet">Hornet</option>
+                                                <option value="Journey">Journey</option>
+                                            </optgroup>
+                                            <optgroup label="Ford">
+                                                <option value="F-150">F-150</option>
+                                                <option value="Ranger">Ranger</option>
+                                                <option value="Maverick">Maverick</option>
+                                                <option value="Explorer">Explorer</option>
+                                                <option value="Edge">Edge</option>
+                                                <option value="Escape">Escape</option>
+                                                <option value="Mustang">Mustang</option>
+                                                <option value="Bronco">Bronco</option>
+                                                <option value="Bronco Sport">Bronco Sport</option>
+                                            </optgroup>
+                                            <optgroup label="GMC">
+                                                <option value="Sierra 1500">Sierra 1500</option>
+                                                <option value="Sierra 2500HD">Sierra 2500HD</option>
+                                                <option value="Terrain">Terrain</option>
+                                                <option value="Acadia">Acadia</option>
+                                                <option value="Yukon">Yukon</option>
+                                                <option value="Canyon">Canyon</option>
+                                            </optgroup>
+                                            <optgroup label="Honda">
+                                                <option value="Accord">Accord</option>
+                                                <option value="Civic">Civic</option>
+                                                <option value="HR-V">HR-V</option>
+                                                <option value="CR-V">CR-V</option>
+                                                <option value="Passport">Passport</option>
+                                                <option value="Pilot">Pilot</option>
+                                                <option value="Ridgeline">Ridgeline</option>
+                                            </optgroup>
+                                            <optgroup label="Toyota">
+                                                <option value="Corolla">Corolla</option>
+                                                <option value="Camry">Camry</option>
+                                                <option value="RAV4">RAV4</option>
+                                                <option value="Highlander">Highlander</option>
+                                                <option value="4Runner">4Runner</option>
+                                                <option value="Tacoma">Tacoma</option>
+                                                <option value="Tundra">Tundra</option>
+                                                <option value="Sienna">Sienna</option>
+                                            </optgroup>
+                                            <optgroup label="Tesla">
+                                                <option value="Model S">Model S</option>
+                                                <option value="Model 3">Model 3</option>
+                                                <option value="Model X">Model X</option>
+                                                <option value="Model Y">Model Y</option>
+                                                <option value="Cybertruck">Cybertruck</option>
+                                            </optgroup>
+                                            <optgroup label="Volkswagen">
+                                                <option value="Golf">Golf</option>
+                                                <option value="Jetta">Jetta</option>
+                                                <option value="Passat">Passat</option>
+                                                <option value="Atlas">Atlas</option>
+                                                <option value="Tiguan">Tiguan</option>
+                                                <option value="ID.4">ID.4</option>
+                                            </optgroup>
+                                            <optgroup label="Volvo">
+                                                <option value="XC40">XC40</option>
+                                                <option value="XC60">XC60</option>
+                                                <option value="XC90">XC90</option>
+                                                <option value="S60">S60</option>
+                                                <option value="S90">S90</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Year -->
+                                    <div class="mb-3">
+                                        <label for="vehicleYear" class="form-label">Year</label>
+                                        <input type="number" id="vehicleYear" min="1995" max="2025" placeholder="Year" >
+                                    </div>
+                    
+                                    <!-- Type -->
+                                    <div class="mb-3">
+                                        <label for="vehicleType" class="form-label">Type</label>
+                                        <select class="form-select" id="vehicleType">
+                                            <option value="" disabled selected>Select type</option>
+                                            <option value="Sedan">Sedan</option>
+                                            <option value="SUV">SUV</option>
+                                            <option value="Coupe">Coupe</option>
+                                            <option value="Truck">Truck</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Mileage -->
+                                    <div class="mb-3">
+                                        <label for="vehicleMile" class="form-label">Mileage</label>
+                                        <input type="number" class="form-control" id="vehicleMile" min="0" placeholder="Enter vehicle mileage" >
+                                    </div>
+                    
+                                    <!-- Transmission -->
+                                    <div class="mb-3">
+                                        <label for="vehicleTrans" class="form-label">Transmission</label>
+                                        <select class="form-select" id="vehicleTrans" >
+                                            <option value="" disabled selected>Select transmission</option>
+                                            <option value="Automatic">Automatic</option>
+                                            <option value="Manual">Manual</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Number of Doors -->
+                                    <div class="mb-3">
+                                        <label for="vehicleDoor" class="form-label">Number of Doors</label>
+                                        <select class="form-select" id="vehicleDoor" >
+                                            <option value="" disabled selected>Select no. of Doors</option>
+                                            <option value="4">4</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Repair Status -->
+                                    <div class="mb-3">
+                                        <label for="vehicleStat" class="form-label">Vehicle Status</label>
+                                        <select class="form-select" id="vehicleStat" >
+                                            <option value="" disabled selected>Select vehicle status</option>
+                                            <option value="Operational">Operational</option>
+                                            <option value="In Repair">In Repair</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Availability -->
+                                    <div class="mb-3">
+                                        <label for="vehicleAvail" class="form-label">Availability</label>
+                                        <select class="form-select" id="vehicleAvail" >
+                                            <option value="" disabled selected>Select vehicle availability</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Vehicle Photo -->
+                                    <div class="mb-3">
+                                        <label for="vehiclePhoto" class="form-label">Vehicle Photo</label>
+                                        <input type="text" class="form-control" id="vehiclePhoto">
+                                    </div>
+                    
+                                    <!-- LocationID -->
+                                    <div class="mb-3">
+                                        <label for="vehicleLoc" class="form-label">Location ID</label>
+                                        <input type="number" id="vehicleLoc" min="0" placeholder="Enter vehicle Location ID" >
+                                    </div>
+                    
+                                    <!-- Key Features -->
+                                    <div class="mb-3">
+                                        <label for="vehicleKey" class="form-label">Features</label>
+                                        <textarea class="form-control" id="vehicleKey" placeholder="Enter vehicle Key Features" rows="3" ></textarea>
+                                    </div>
+                    
+                                    <!-- Description -->
+                                    <div class="mb-3">
+                                        <label for="vehicleDesc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="vehicleDesc" placeholder="Enter vehicle Description" rows="3" ></textarea>
+                                    </div>
+                    
+                                    <!-- Drivetrain -->
+                                    <div class="mb-3">
+                                        <label for="vehicleDrive" class="form-label">Drivetrain</label>
+                                        <select class="form-select" id="vehicleDrive" >
+                                            <option value="" disabled selected>Select vehicle Drivetrain</option>
+                                            <option value="4WD">4WD</option>
+                                            <option value="RWD">RWD</option>
+                                            <option value="AWD">AWD</option>
+                                            <option value="FWD">FWD</option>
+                                        </select>
+                                    </div>
+                    
+                                    <button type="submit" class="btn btn-primary">Add Vehicle</button>
+                                </form>
+                            `;
+                    
+                        // Add event listener for form submission
+                            document.getElementById('createVehicleForm').addEventListener('submit', function(event) {
+                                event.preventDefault();  // Prevent default form submission
+                    
+                                // Collect form data
+                                const vehicleData = new FormData();
+                                vehicleData.append('make', document.getElementById('vehicleMake').value);
+                                vehicleData.append('model', document.getElementById('vehicleModel').value);
+                                vehicleData.append('year', document.getElementById('vehicleYear').value);
+                                vehicleData.append('type', document.getElementById('vehicleType').value);
+                                vehicleData.append('mileage', document.getElementById('vehicleMile').value);
+                                vehicleData.append('transmission', document.getElementById('vehicleTrans').value);
+                                vehicleData.append('numdoors', document.getElementById('vehicleDoor').value);
+                                vehicleData.append('repairstatus', document.getElementById('vehicleStat').value);
+                                vehicleData.append('available', document.getElementById('vehicleAvail').value);
+                                vehicleData.append('locationid', document.getElementById('vehicleLoc').value);
+                                vehicleData.append('keyfeatures', document.getElementById('vehicleKey').value);
+                                vehicleData.append('description', document.getElementById('vehicleDesc').value);
+                                vehicleData.append('drivetrain', document.getElementById('vehicleDrive').value);
+                                vehicleData.append('photos', document.getElementById('vehiclePhoto').value);
+                    
+                                // Validate the form (ensure no field is empty)
+                                if (!vehicleData.get('make') || !vehicleData.get('model') || !vehicleData.get('year') ||
+                                    !vehicleData.get('type') || !vehicleData.get('mileage') || !vehicleData.get('transmission') ||
+                                    !vehicleData.get('numdoors') || !vehicleData.get('repairstatus') || !vehicleData.get('available') || !vehicleData.get('photos')
+                                    || !vehicleData.get('locationid') || !vehicleData.get('keyfeatures') || !vehicleData.get('description') || !vehicleData.get('drivetrain')) {
+                                    // Show the error modal if validation fails
+                                    showErrorModal('Error: All fields must be completed to modify successfully.');
+                                    return;  // Prevent submission if validation fails
+                                }
+                                // Send the form data to the Flask backend using fetch with FormData
+                                fetch('/create_vehicle', {
+                                    method: 'POST',
+                                    body: vehicleData  // Send the FormData object with the file included
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message) {
+                                        alert(data.message);  // Show success message
+                                        // Reset form after successful submission
+                                        document.getElementById('createVehicleForm').reset();
+                                    } else {
+                                        alert('Error: ' + data.error);  // Show error message
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('There was an error adding a vehicle.');
+                                });
+                            });
+                        });
+                    
+                    
+                         // Listen for clicks on "Modify vehicle Data"
+                        document.getElementById('modifyCar').addEventListener('click', function() {
+                            document.getElementById('customerDataContent').innerHTML = `
+                                <form id="modifyvehicleForm">
+                                    <h3>Modify vehicle Data</h3>
+                    
+                                    <!-- vehicle ID (Input for searching) -->
+                                    <div class="mb-3">
+                                        <label for="vehicleIDInput" class="form-label">Vehicle ID</label>
+                                        <input type="text" class="form-control" id="vehicleIDInput" placeholder="Enter vehicle ID" >
+                                        <button type="button" id="fetchvehicleBtn" class="btn btn-primary mt-3">Fetch vehicle Data</button>
+                                    </div>
+                    
+                                    <!-- Make -->
+                                    <div class="mb-3">
+                                        <label for="vehicleMake" class="form-label">Make</label>
+                                        <select class="form-select" id="vehicleMake">
+                                            <option value="" disabled selected>Select make</option>
+                                            <option value="Acura">Acura</option>
+                                            <option value="Alfa Romeo">Alfa Romeo</option>
+                                            <option value="Audi">Audi</option>
+                                            <option value="BMW">BMW</option>
+                                            <option value="Buick">Buick</option>
+                                            <option value="Cadillac">Cadillac</option>
+                                            <option value="Chevrolet">Chevrolet</option>
+                                            <option value="Chrysler">Chrysler</option>
+                                            <option value="Dodge">Dodge</option>
+                                            <option value="Fiat">Fiat</option>
+                                            <option value="Ford">Ford</option>
+                                            <option value="Genesis">Genesis</option>
+                                            <option value="GMC">GMC</option>
+                                            <option value="Honda">Honda</option>
+                                            <option value="Hyundai">Hyundai</option>
+                                            <option value="Infiniti">Infiniti</option>
+                                            <option value="Jaguar">Jaguar</option>
+                                            <option value="Jeep">Jeep</option>
+                                            <option value="Kia">Kia</option>
+                                            <option value="Land Rover">Land Rover</option>
+                                            <option value="Lexus">Lexus</option>
+                                            <option value="Lincoln">Lincoln</option>
+                                            <option value="Mazda">Mazda</option>
+                                            <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                            <option value="Mini">Mini</option>
+                                            <option value="Mitsubishi">Mitsubishi</option>
+                                            <option value="Nissan">Nissan</option>
+                                            <option value="Porsche">Porsche</option>
+                                            <option value="Ram">Ram</option>
+                                            <option value="Subaru">Subaru</option>
+                                            <option value="Tesla">Tesla</option>
+                                            <option value="Toyota">Toyota</option>
+                                            <option value="Volkswagen">Volkswagen</option>
+                                            <option value="Volvo">Volvo</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Model -->
+                                    <div class="mb-3">
+                                        <label for="vehicleModel" class="form-label">Model</label>
+                                        <select class="form-select" id="vehicleModel">
+                                            <option value="" disabled selected>Select model</option>
+                                            <optgroup label="Acura">
+                                                <option value="ILX">ILX</option>
+                                                <option value="MDX">MDX</option>
+                                                <option value="RDX">RDX</option>
+                                                <option value="TLX">TLX</option>
+                                                <option value="NSX">NSX</option>
+                                            </optgroup>
+                                            <optgroup label="Alfa Romeo">
+                                                <option value="Giulia">Giulia</option>
+                                                <option value="Stelvio">Stelvio</option>
+                                                <option value="4C">4C</option>
+                                                <option value="Tonale">Tonale</option>
+                                            </optgroup>
+                                            <optgroup label="Audi">
+                                                <option value="A3">A3</option>
+                                                <option value="A4">A4</option>
+                                                <option value="A6">A6</option>
+                                                <option value="A8">A8</option>
+                                                <option value="Q3">Q3</option>
+                                                <option value="Q5">Q5</option>
+                                                <option value="Q7">Q7</option>
+                                                <option value="Q8">Q8</option>
+                                                <option value="e-tron">e-tron</option>
+                                            </optgroup>
+                                            <optgroup label="BMW">
+                                                <option value="2 Series">2 Series</option>
+                                                <option value="3 Series">3 Series</option>
+                                                <option value="4 Series">4 Series</option>
+                                                <option value="5 Series">5 Series</option>
+                                                <option value="7 Series">7 Series</option>
+                                                <option value="X1">X1</option>
+                                                <option value="X3">X3</option>
+                                                <option value="X5">X5</option>
+                                                <option value="X7">X7</option>
+                                                <option value="i3">i3</option>
+                                                <option value="i8">i8</option>
+                                            </optgroup>
+                                            <optgroup label="Buick">
+                                                <option value="Encore">Encore</option>
+                                                <option value="Encore GX">Encore GX</option>
+                                                <option value="Envision">Envision</option>
+                                                <option value="Enclave">Enclave</option>
+                                                <option value="Regal">Regal</option>
+                                            </optgroup>
+                                            <optgroup label="Cadillac">
+                                                <option value="CT4">CT4</option>
+                                                <option value="CT5">CT5</option>
+                                                <option value="XT4">XT4</option>
+                                                <option value="XT5">XT5</option>
+                                                <option value="XT6">XT6</option>
+                                                <option value="Escalade">Escalade</option>
+                                            </optgroup>
+                                            <optgroup label="Chevrolet">
+                                                <option value="Silverado 1500">Silverado 1500</option>
+                                                <option value="Silverado 2500HD">Silverado 2500HD</option>
+                                                <option value="Equinox">Equinox</option>
+                                                <option value="Traverse">Traverse</option>
+                                                <option value="Blazer">Blazer</option>
+                                                <option value="Malibu">Malibu</option>
+                                                <option value="Tahoe">Tahoe</option>
+                                                <option value="Suburban">Suburban</option>
+                                                <option value="Camaro">Camaro</option>
+                                                <option value="Corvette">Corvette</option>
+                                            </optgroup>
+                                            <optgroup label="Chrysler">
+                                                <option value="300">300</option>
+                                                <option value="Pacifica">Pacifica</option>
+                                                <option value="Voyager">Voyager</option>
+                                            </optgroup>
+                                            <optgroup label="Dodge">
+                                                <option value="Challenger">Challenger</option>
+                                                <option value="Charger">Charger</option>
+                                                <option value="Durango">Durango</option>
+                                                <option value="Hornet">Hornet</option>
+                                                <option value="Journey">Journey</option>
+                                            </optgroup>
+                                            <optgroup label="Ford">
+                                                <option value="F-150">F-150</option>
+                                                <option value="Ranger">Ranger</option>
+                                                <option value="Maverick">Maverick</option>
+                                                <option value="Explorer">Explorer</option>
+                                                <option value="Edge">Edge</option>
+                                                <option value="Escape">Escape</option>
+                                                <option value="Mustang">Mustang</option>
+                                                <option value="Bronco">Bronco</option>
+                                                <option value="Bronco Sport">Bronco Sport</option>
+                                            </optgroup>
+                                            <optgroup label="GMC">
+                                                <option value="Sierra 1500">Sierra 1500</option>
+                                                <option value="Sierra 2500HD">Sierra 2500HD</option>
+                                                <option value="Terrain">Terrain</option>
+                                                <option value="Acadia">Acadia</option>
+                                                <option value="Yukon">Yukon</option>
+                                                <option value="Canyon">Canyon</option>
+                                            </optgroup>
+                                            <optgroup label="Honda">
+                                                <option value="Accord">Accord</option>
+                                                <option value="Civic">Civic</option>
+                                                <option value="HR-V">HR-V</option>
+                                                <option value="CR-V">CR-V</option>
+                                                <option value="Passport">Passport</option>
+                                                <option value="Pilot">Pilot</option>
+                                                <option value="Ridgeline">Ridgeline</option>
+                                            </optgroup>
+                                            <optgroup label="Toyota">
+                                                <option value="Corolla">Corolla</option>
+                                                <option value="Camry">Camry</option>
+                                                <option value="RAV4">RAV4</option>
+                                                <option value="Highlander">Highlander</option>
+                                                <option value="4Runner">4Runner</option>
+                                                <option value="Tacoma">Tacoma</option>
+                                                <option value="Tundra">Tundra</option>
+                                                <option value="Sienna">Sienna</option>
+                                            </optgroup>
+                                            <optgroup label="Tesla">
+                                                <option value="Model S">Model S</option>
+                                                <option value="Model 3">Model 3</option>
+                                                <option value="Model X">Model X</option>
+                                                <option value="Model Y">Model Y</option>
+                                                <option value="Cybertruck">Cybertruck</option>
+                                            </optgroup>
+                                            <optgroup label="Volkswagen">
+                                                <option value="Golf">Golf</option>
+                                                <option value="Jetta">Jetta</option>
+                                                <option value="Passat">Passat</option>
+                                                <option value="Atlas">Atlas</option>
+                                                <option value="Tiguan">Tiguan</option>
+                                                <option value="ID.4">ID.4</option>
+                                            </optgroup>
+                                            <optgroup label="Volvo">
+                                                <option value="XC40">XC40</option>
+                                                <option value="XC60">XC60</option>
+                                                <option value="XC90">XC90</option>
+                                                <option value="S60">S60</option>
+                                                <option value="S90">S90</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Year -->
+                                    <div class="mb-3">
+                                        <label for="vehicleYear" class="form-label">Year</label>
+                                        <input type="number" id="vehicleYear" min="1995" max="2025" placeholder="Enter vehicle year" >
+                                    </div>
+                    
+                                    <!-- Type -->
+                                    <div class="mb-3">
+                                        <label for="vehicleType" class="form-label">Type</label>
+                                        <select class="form-select" id="vehicleType">
+                                            <option value="" disabled selected>Select type</option>
+                                            <option value="Sedan">Sedan</option>
+                                            <option value="SUV">SUV</option>
+                                            <option value="Coupe">Coupe</option>
+                                            <option value="Truck">Truck</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Mileage -->
+                                    <div class="mb-3">
+                                        <label for="vehicleMile" class="form-label">Mileage</label>
+                                        <input type="number" class="form-control" id="vehicleMile" min="0" placeholder="Enter vehicle mileage" >
+                                    </div>
+                    
+                                    <!-- Transmission -->
+                                    <div class="mb-3">
+                                        <label for="vehicleTrans" class="form-label">Transmission</label>
+                                        <select class="form-select" id="vehicleTrans" >
+                                            <option value="" disabled selected>Select transmission</option>
+                                            <option value="Automatic">Automatic</option>
+                                            <option value="Manual">Manual</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Number of Doors -->
+                                    <div class="mb-3">
+                                        <label for="vehicleDoor" class="form-label">Number of Doors</label>
+                                        <select class="form-select" id="vehicleDoor" >
+                                            <option value="" disabled selected>Select no. of Doors</option>
+                                            <option value="4">4</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Repair Status -->
+                                    <div class="mb-3">
+                                        <label for="vehicleStat" class="form-label">Vehicle Status</label>
+                                        <select class="form-select" id="vehicleStat" >
+                                            <option value="" disabled selected>Select vehicle status</option>
+                                            <option value="Operational">Operational</option>
+                                            <option value="In Repair">In Repair</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Availability -->
+                                    <div class="mb-3">
+                                        <label for="vehicleAvail" class="form-label">Availability</label>
+                                        <select class="form-select" id="vehicleAvail" >
+                                            <option value="" disabled selected>Select vehicle availability</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                    
+                                    <!-- Vehicle Photo -->
+                                    <div class="mb-3">
+                                        <label for="vehiclePhoto" class="form-label">Vehicle Photo</label>
+                                        <input type="text" class="form-control" id="vehiclePhoto">
+                                    </div>
+                    
+                                    <!-- LocationID -->
+                                    <div class="mb-3">
+                                        <label for="vehicleLoc" class="form-label">Location ID</label>
+                                        <input type="number" id="vehicleLoc" min="0" placeholder="Enter vehicle Location ID" >
+                                    </div>
+                                    
+                                    <!-- ServiceID -->
+                                    <div class="mb-3">
+                                        <label for="vehicleSer" class="form-label">Service ID</label>
+                                        <input type="number" id="vehicleSer" min="0" placeholder="Enter vehicle Service ID" readonly disabled>
+                                    </div>
+                    
+                                    <!-- Key Features -->
+                                    <div class="mb-3">
+                                        <label for="vehicleKey" class="form-label">Features</label>
+                                        <textarea class="form-control" id="vehicleKey" placeholder="Enter vehicle Key Features" rows="3" ></textarea>
+                                    </div>
+                    
+                                    <!-- Description -->
+                                    <div class="mb-3">
+                                        <label for="vehicleDesc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="vehicleDesc" placeholder="Enter vehicle Description" rows="3" ></textarea>
+                                    </div>
+                    
+                                    <!-- Drivetrain -->
+                                    <div class="mb-3">
+                                        <label for="vehicleDrive" class="form-label">Drivetrain</label>
+                                        <select class="form-select" id="vehicleDrive" >
+                                            <option value="" disabled selected>Select vehicle Drivetrain</option>
+                                            <option value="4WD">4WD</option>
+                                            <option value="RWD">RWD</option>
+                                            <option value="AWD">AWD</option>
+                                            <option value="FWD">FWD</option>
+                                        </select>
+                                    </div>
+                    
+                                    <button type="submit" class="btn btn-info">Modify vehicle</button>
+                                </form>
+                            `;
+                    
+                            // Fetch vehicle data based on UserID input
+                            document.getElementById('fetchvehicleBtn').addEventListener('click', function() {
+                                const vehicleID = document.getElementById('vehicleIDInput').value;
+                    
+                                // Validate input
+                                if (!vehicleID) {
+                                    alert('Please enter a vehicle ID to search.');
+                                    return;
+                                }
+                    
+                                // Fetch vehicle data from backend using the vehicle UserID
+                                fetch('/get_vehicle_by_vehicleid', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ vehicleID: vehicleID })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.vehicle) {
+                                        // Populate form fields with vehicle data
+                                        document.getElementById('vehicleMake').value = data.vehicle.make;
+                                        document.getElementById('vehicleModel').value = data.vehicle.model;
+                                        document.getElementById('vehicleYear').value = data.vehicle.year;
+                                        document.getElementById('vehicleType').value = data.vehicle.type;
+                                        document.getElementById('vehicleMile').value = data.vehicle.mileage;
+                                        document.getElementById('vehicleTrans').value = data.vehicle.transmission;
+                                        document.getElementById('vehicleDoor').value = data.vehicle.numdoors;
+                                        document.getElementById('vehicleStat').value = data.vehicle.repairstatus;
+                                        document.getElementById('vehicleAvail').value = data.vehicle.available;
+                                        document.getElementById('vehiclePhoto').value = data.vehicle.photos;
+                                        document.getElementById('vehicleLoc').value = data.vehicle.locationid;
+                                        document.getElementById('vehicleSer').value = data.vehicle.serviceid;
+                                        document.getElementById('vehicleKey').value = data.vehicle.keyfeatures;
+                                        document.getElementById('vehicleDesc').value = data.vehicle.description;
+                                        document.getElementById('vehicleDrive').value = data.vehicle.drivetrain;
+        
+                                    } else {
+                                        alert('vehicle not found');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('There was an error fetching vehicle data.');
+                                });
+                            });
+                    
+                            // Handle form submission for modifying vehicle data
+                            document.getElementById('modifyvehicleForm').addEventListener('submit', function(event) {
+                                event.preventDefault();
+                    
+                                // Collect the form data
+                                const updatedvehicleData = {
+                                    vehicleID: document.getElementById('vehicleIDInput').value,  // Include the vehicleID
+                                    make: document.getElementById('vehicleMake').value,
+                                    model: document.getElementById('vehicleModel').value,
+                                    year: document.getElementById('vehicleYear').value,
+                                    type: document.getElementById('vehicleType').value,
+                                    mileage: document.getElementById('vehicleMile').value,
+                                    transmission: document.getElementById('vehicleTrans').value,
+                                    numdoors: document.getElementById('vehicleDoor').value,
+                                    repairstatus: document.getElementById('vehicleStat').value,
+                                    available: document.getElementById('vehicleAvail').value,
+                                    photo: document.getElementById('vehiclePhoto').value,
+                                    locationid: document.getElementById('vehicleLoc').value,
+                                    serviceid: document.getElementById('vehicleSer').value,
+                                    keyfeatures: document.getElementById('vehicleKey').value,
+                                    description: document.getElementById('vehicleDesc').value,
+                                    drivetrain: document.getElementById('vehicleDrive').value,
+                                };
+                    
+                                // Validate the form (ensure no field is empty)
+                                if (!updatedvehicleData.vehicleID || !updatedvehicleData.make || !updatedvehicleData.model || 
+                                    !updatedvehicleData.year || !updatedvehicleData.type || !updatedvehicleData.mileage || 
+                                    !updatedvehicleData.transmission || !updatedvehicleData.numdoors || !updatedvehicleData.repairstatus || !updatedvehicleData.available || 
+                                    !updatedvehicleData.photo || !updatedvehicleData.locationid || !updatedvehicleData.serviceid || 
+                                    !updatedvehicleData.keyfeatures || !updatedvehicleData.description || !updatedvehicleData.drivetrain) {
+                                    // Show the error modal if validation fails
+                                    showErrorModal('Error: All fields must be completed to modify successfully.');
+                                    return;  // Prevent submission if validation fails
+                                }
+                    
+                                // Send the updated data to the backend
+                                fetch('/modify_vehicle', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(updatedvehicleData)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message) {
+                                        alert(data.message);
+                                    } else {
+                                        alert('Error: ' + data.error);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('There was an error modifying the vehicle data.');
+                                });
+                            });
+                        });
+                    
+                        // Listen for clicks on "Delete vehicle Data"
+                        document.getElementById('deleteCar').addEventListener('click', function () {
+                            document.getElementById('customerDataContent').innerHTML = `
+                                <form id="deletevehicleForm">
+                                    <h3>Deactivate vehicle Data</h3>
+                    
+                                    <!-- vehicle ID (Input for searching) -->
+                                    <div class="mb-3">
+                                        <label for="vehicleIDInput" class="form-label">Vehicle ID</label>
+                                        <input type="text" class="form-control" id="vehicleIDInput" placeholder="Enter vehicle ID" required>
+                                        <button type="button" id="fetchvehicleBtn" class="btn btn-primary mt-3">Fetch vehicle Data</button>
+                                    </div>
+                    
+                                    <!-- Display vehicle Data -->
+                                    <div id="vehicleDetails" style="display: none;">
+                                        <div class="mb-3">
+                                            <label for="vehicleMake" class="form-label">Make</label>
+                                            <input type="text" class="form-control" id="vehicleMake" placeholder="Vehicle make" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="vehicleModel" class="form-label">Model</label>
+                                            <input type="text" class="form-control" id="vehicleModel" placeholder="Vehicle model" disabled>
+                                        </div>
+
+                                        <!-- Add more fields as needed for confirmation -->
+                    
+                                        <!-- Deactivate Button -->
+                                        <button type="button" class="btn btn-danger mt-3" id="deactivatevehicleBtn">Deactivate vehicle</button>
+                                    </div>
+                                </form>
+                            `;
+                    
+                            // Fetch vehicle data based on UserID input
+                            document.getElementById('fetchvehicleBtn').addEventListener('click', function () {
+                                const vehicleID = document.getElementById('vehicleIDInput').value;
+                                console.log(vehicleID);
+                                // Validate input
+                                if (!vehicleID) {
+                                    alert('Please enter a vehicle ID to search.');
+                                    return;
+                                }
+                    
+                                // Fetch vehicle data from backend using the vehicle UserID
+                                fetch('/get_vehicle_by_vehicleid', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ vehicleID: vehicleID })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.vehicle) {
+                                            // Populate form fields with vehicle data for confirmation
+                                            document.getElementById('vehicleMake').value = data.vehicle.make;
+                                            document.getElementById('vehicleModel').value = data.vehicle.model;
+
+                                            // Remove if fields above are added
+
+                                          //document.getElementById('vehicleYear').value = data.vehicle.year;
+                                          //document.getElementById('vehicleType').value = data.vehicle.type;
+                                          //document.getElementById('vehicleMile').value = data.vehicle.mileage;
+                                          //document.getElementById('vehicleTrans').value = data.vehicle.transmission;
+                                          //document.getElementById('vehicleDoor').value = data.vehicle.numdoors;
+                                          //document.getElementById('vehicleStat').value = data.vehicle.repairstatus;
+                                          //document.getElementById('vehicleAvail').value = data.vehicle.available;
+                                          //document.getElementById('vehiclePhoto').value = data.vehicle.photos;
+                                          //document.getElementById('vehicleLoc').value = data.vehicle.locationid;
+                                          //document.getElementById('vehicleSer').value = data.vehicle.serviceid;
+                                          //document.getElementById('vehicleKey').value = data.vehicle.keyfeatures;
+                                          //document.getElementById('vehicleDesc').value = data.vehicle.description;
+                                          //document.getElementById('vehicleDrive').value = data.vehicle.drivetrain;
+
+                                            // Show vehicle details
+                                            document.getElementById('vehicleDetails').style.display = 'block';
+                                        } else {
+                                            alert('vehicle not found');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('There was an error fetching vehicle data.');
+                                    });
+                            });
+                    
+                            // Handle deactivation of vehicle data
+                            document.getElementById('deactivatevehicleBtn').addEventListener('click', function () {
+                                const vehicleID = document.getElementById('vehicleIDInput').value;
+                    
+                                // Show a confirmation modal before deactivating
+                                showDeactivateModal(vehicleID);
+                            });
+                    
+                            // Function to show the deactivate confirmation modal
+                            function showDeactivateModal(vehicleID) {
+                                // Create the modal HTML structure
+                                const modalHTML = `
+                                    <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deactivateModalLabel">Confirm Deactivation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to deactivate this vehicle record?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light"  style="background-color: #f5f5f5;" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger" id="confirmDeactivateBtn">Deactivate</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                    
+                                // Add the modal HTML to the body
+                                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                    
+                                // Show the modal
+                                const deactivateModal = new bootstrap.Modal(document.getElementById('deactivateModal'));
+                                deactivateModal.show();
+                    
+                                // Add event listener for confirm deactivate button
+                                document.getElementById('confirmDeactivateBtn').addEventListener('click', function () {
+                                    // Call the delete endpoint
+                                    fetch('/delete_vehicle', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ vehicleID: vehicleID })
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.message) {
+                                                alert(data.message);
+                                                deactivateModal.hide(); // Close the modal
+                                                document.getElementById('deletevehicleForm').reset(); // Reset the form
+                                                document.getElementById('vehicleDetails').style.display = 'none'; // Hide the vehicle details section
+                                            } else {
+                                                alert('Error: ' + data.error);
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            alert('There was an error deactivating the vehicle data.');
                                         });
                                 });
                             }
