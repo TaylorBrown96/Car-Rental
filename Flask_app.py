@@ -262,7 +262,9 @@ def remove_from_cart(reserve_id):
             newReservedCars += car[0] + "," + car[1] + "," + car[2] + ";"
     
     session["reservedCars"] = newReservedCars
-
+    
+    if session["Usertype"] == 1:
+        return redirect(url_for("cart", admin=admin_nav()))
     return redirect(url_for("cart"))
 
 
@@ -349,7 +351,7 @@ def create_customer():
 
         # Add dummy values for Username and Password
         username = customer_data['email'].split('@')[0]  # Use email prefix as username
-        password = hashlib.sha3_512("defaultpassword".encode()).hexdigest()  # Dummy password
+        password = "defaultpassword"  # Dummy password
 
         try:
             # Call insert_customer function with the required arguments
@@ -359,6 +361,43 @@ def create_customer():
             return jsonify({'error': str(e)}), 500
     else:
         return jsonify({'error': 'Invalid photo file format'}), 400
+    
+    
+@app.route('/create_vehicle', methods=['POST'])
+def create_vehicle():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    if session["Usertype"] != 1:
+        return redirect(url_for("products"))
+    if request.method == 'POST':
+        
+        # Now gather other customer details from the form data
+        vehicle_data = {
+            'make': request.form.get('make'),
+            'model': request.form.get('model'),
+            'year': request.form.get('year'),
+            'type': request.form.get('type'),
+            'mileage': request.form.get('mileage'),
+            'transmission': request.form.get('transmission'),
+            'numdoors': request.form.get('numdoors'),
+            'repairstatus': request.form.get('repairstatus'),
+            'available': request.form.get('available'),
+            'locationid': request.form.get('locationid'),
+            'serviceid': request.form.get('serviceid'),
+            'keyfeatures': request.form.get('keyfeatures'),
+            'description': request.form.get('description'),
+            'drivetrain': request.form.get('drivetrain'),
+            'photos': request.form.get('photos')
+        }
+
+        try:
+            # Call insert_customer function with the required arguments
+            insert_vehicle(vehicle_data)
+            return jsonify({'message': 'Vehicle added successfully!'}), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    else:
+        return redirect(url_for("admin"))
     
     
 @app.route('/get_customer_by_userid', methods=['POST'])
@@ -394,6 +433,39 @@ def get_customer_by_userid():
         return jsonify({'customer': customer_data})
     else:
         return jsonify({'error': 'Customer not found'}), 404
+    
+    
+@app.route('/get_vehicle_by_vehicleid', methods=['POST'])
+def get_vehicle_by_vehicleid():
+    data = request.get_json()
+    vehicle_id = int(data.get('vehicleID'))
+
+    if not vehicle_id:
+        return jsonify({'error': 'VehicleID is required'}), 400
+
+    vehicle = get_vehicle_by_id(vehicle_id)
+
+    if vehicle:
+        vehicle_data = {
+            'make': vehicle[1],
+            'model': vehicle[2],
+            'year': vehicle[3],
+            'type': vehicle[4],
+            'mileage': vehicle[5],
+            'transmission': vehicle[6],
+            'numdoors': vehicle[7],
+            'repairstatus': vehicle[8],
+            'available': vehicle[9],
+            'photos': vehicle[10],
+            'locationid': vehicle[11],
+            'serviceid': vehicle[12],
+            'keyfeatures': vehicle[13],
+            'description': vehicle[14],
+            'drivetrain': vehicle[15]
+        }
+        return jsonify({'vehicle': vehicle_data})
+    else:
+        return jsonify({'error': 'Vehicle not found'}), 404
 
 @app.route('/modify_customer', methods=['POST'])
 def modify_customer():
@@ -440,6 +512,40 @@ def modify_customer():
         return jsonify({'message': 'Customer updated successfully!'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/modify_vehicle', methods=['POST'])
+def modify_vehicle():
+    vehicle_data = request.json  # Get the JSON payload from the frontend
+
+    # Ensure that the UserID is provided
+    if 'vehicleID' not in vehicle_data or not vehicle_data['vehicleID']:
+        return jsonify({'error': 'VehicleID is required'}), 400
+
+    # Get the UserID and other customer data
+    vehicle_id = vehicle_data['vehicleID']
+    make = vehicle_data.get('make')
+    model = vehicle_data.get('model')
+    year = vehicle_data.get('year')
+    type = vehicle_data.get('type')
+    mileage = vehicle_data.get('mileage')
+    transmission = vehicle_data.get('transmission')
+    numdoors = vehicle_data.get('numdoors')
+    repairstatus = vehicle_data.get('repairstatus')
+    available = vehicle_data.get('available')
+    photos = vehicle_data.get('photo')  
+    locationid = vehicle_data.get('locationid')
+    serviceid = vehicle_data.get('serviceid')
+    keyfeatures = vehicle_data.get('keyfeatures')
+    description = vehicle_data.get('description')
+    drivetrain = vehicle_data.get('drivetrain')
+
+    # Update the vehicle data in the database using the `update_vehicle_in_db` function
+    try:
+        update_vehicle_in_db(vehicle_id, make, model, year, type, mileage, transmission, numdoors, repairstatus, available, photos, locationid, serviceid, keyfeatures, description, drivetrain)
+        return jsonify({'message': 'Vehicle updated successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/delete_customer', methods=['POST'])
 def delete_customer():
@@ -458,7 +564,23 @@ def delete_customer():
         return jsonify({'error': str(e)}), 500
     
     
-     
+@app.route('/delete_vehicle', methods=['POST'])
+def delete_vehicle():
+    data = request.json  # Get the JSON payload from the frontend
+    vehicle_id = data.get('vehicleID')
+
+    # Ensure that the UserID is provided
+    if not vehicle_id:
+        return jsonify({'error': 'VehicleID is required'}), 400
+
+    # Update the "Active" status of the customer to "False" instead of deleting
+    try:
+        mark_vehicle_inactive(vehicle_id)
+        return jsonify({'message': 'Vehicle marked as inactive successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500    
+    
+    
 # Allowed extensions are already defined in the config
 def allowed_file(filename):
     """
