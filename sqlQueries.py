@@ -392,10 +392,19 @@ def mark_vehicle_inactive(vehicle_id):
     conn.close()
     
     
-def make_reservation_db(vehicleid, planid, customerid, startdate, enddate, location, userID):
+def make_reservation_db(vehicleid, planid, customerid, startdate, enddate, numdays, location, userID, totalprice):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO Reservations (VehicleID, UserID, PlanID, ReserveStartDate, ReserveEndDate, PickUpLocation, DropOffLocation, CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (vehicleid, userID, planid, startdate, enddate, location, location, customerid))
+    cursor.execute("INSERT INTO Reservations (VehicleID, UserID, PlanID, ReserveStartDate, ReserveEndDate, NumDays, PickUpLocation, DropOffLocation, CustomerID, TotalPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (vehicleid, userID, planid, startdate, enddate, numdays, location, location, customerid, totalprice))
+    conn.commit()
+    conn.close()
+    
+    return True
+
+def update_reservation_db(ReservationID, InvoiceID):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("UPDATE Reservations SET InvoiceID = ? WHERE ReservationID = ?", (InvoiceID, ReservationID))
     conn.commit()
     conn.close()
     
@@ -410,6 +419,16 @@ def make_invoice_db(planID, ReservationID, VehicleID, CustomerID):
     conn.close()
     
     return True
+
+
+def get_invoiceid_by_reservationid(reservationid):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT InvoiceID FROM Invoice WHERE ReservationID = ?", (reservationid,))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data[0] if data else None
 
 
 def insert_customer(name, address, phone, email, filename):
@@ -453,4 +472,23 @@ def get_reservationid_by_customerid(customerid, vehicleid, startdate, enddate):
     conn.close()
     
     return data[0] if data else None
-                 
+
+
+def get_reservations_tableData(numRows=5, pickedup=False):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT ReservationID, VehicleID, ReserveStartDate, ReserveEndDate, InvoiceID, CustomerID FROM Reservations WHERE PickedUp = ? ORDER BY ReservationID DESC LIMIT ?", (str(pickedup), numRows,))
+    data = cursor.fetchall()
+    conn.close()
+    
+    return data
+
+
+def get_emailData_by_customerid(customer_id):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT Email FROM Customers WHERE CustomerID = ?", (customer_id,))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data[0] if data else None

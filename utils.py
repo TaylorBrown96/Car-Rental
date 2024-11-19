@@ -257,6 +257,25 @@ def generate_dates_between(start_date, end_date):
 def admin_nav():
     admin_html = Markup("""
                         <a href="/admin">
-                            <button class="btn btn-primary shadow" type="button" data-bs-target="#signup" data-bs-toggle="modal" style="margin-right: 10px;">Admin Panel</button>
+                            <button class="btn btn-primary shadow" type="button" style="margin-right: 10px;">Admin Panel</button>
                         </a>""")
     return admin_html
+
+
+def generate_pickupdropoff_html(reservationsTableData):
+    html = ""
+    for reservation in reservationsTableData:
+        html += Markup("""
+                        <tr>
+                            <td class="text-truncate" style="max-width: 200px;">{ReservationID}</td>
+                            <td class="text-truncate" style="max-width: 200px;">{VehicleID}</td>
+                            <td>{InvoiceID}</td>
+                            <td class="text-truncate" style="max-width: 200px;">{Email}</td>
+                            <td class="text-truncate" style="max-width: 200px;">{ReserveStartDate}</td>
+                            <td class="text-truncate" style="max-width: 200px;">{ReserveEndDate}</td>
+                            <td class="text-center"><a href="/reservation/{ReservationID}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-eye-fill fs-5 text-primary">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
+                            </svg></a></td>
+                        </tr>""").format(ReservationID=reservation[0], VehicleID=reservation[1], InvoiceID=reservation[4], Email=reservation[6], ReserveStartDate=reservation[2], ReserveEndDate=reservation[3])
+    return html

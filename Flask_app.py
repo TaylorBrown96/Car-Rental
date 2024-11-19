@@ -56,7 +56,6 @@ def products():
     if selected_end_date != "": end_date = datetime.strptime(selected_end_date, "%Y-%m-%d").strftime("%m/%d/%Y")
     
     if selected_start_date != "" and selected_end_date != "": 
-        print(f"Start Date: {start_date}, End Date: {end_date}")
         # Retrieve filtered or all vehicle data with availability between selected dates
         vehicle_data = filter_vehicles_by_dates(
             selected_type,
@@ -290,7 +289,7 @@ def remove_from_cart(reserve_id):
     session["reservedCars"] = newReservedCars
     
     if session["Usertype"] == 1:
-        return redirect(url_for("cart", admin=admin_nav()))
+        return redirect(url_for("cart"))
     return redirect(url_for("cart"))
 
 
@@ -682,6 +681,8 @@ def make_reservation():
         
         customerid = get_customerid_by_email(email)
         
+        _,total = GetCheckoutValues(reservedCars)
+        
         for car in reservedCars:
             car = car.strip().split(",")
             if len(car) == 3:
@@ -691,9 +692,11 @@ def make_reservation():
                 startdate = datetime.strptime(daterange.split(" - ")[0], "%m/%d/%Y").strftime("%m/%d/%Y")
                 enddate = datetime.strptime(daterange.split(" - ")[1], "%m/%d/%Y").strftime("%m/%d/%Y")
                 
+                numdays = getNumDays(daterange) + 1
+                
                 planID = get_planid_by_vehicleid(int(vehicle_id))
                 location = get_vehicle_by_id(int(vehicle_id))[11]
-                success = make_reservation_db(int(vehicle_id), planID, customerid[0], startdate, enddate, location, userID=session['UserID'])
+                success = make_reservation_db(int(vehicle_id), planID, customerid[0], startdate, enddate, numdays, location, userID=session['UserID'], totalprice=total[2])
                 if not success:
                     return jsonify({'error': 'Failed to make reservation'}), 500
                 
@@ -706,8 +709,9 @@ def make_reservation():
                 
                 reservationid = get_reservationid_by_customerid(customerid[0], car[0], startdate, enddate)
                 planID = get_planid_by_vehicleid(car[0])
-                print(f"ReservationID: {reservationid}, PlanID: {planID}")
                 success = make_invoice_db(planID, reservationid, car[0], customerid[0])
+                invoiceID = get_invoiceid_by_reservationid(reservationid)
+                update_reservation_db(reservationid, invoiceID)
                 
                 if not success:
                     return jsonify({'error': 'Failed to make invoice'}), 500
@@ -742,9 +746,46 @@ def make_reservation():
         return render_template("make-reservation.html", cart=cart)
 
 
+@app.route('/pickupdropoff', methods=['POST', 'GET'])
+def pickupdropoff():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    
+    pickupHTML = ""
+    dropoffHTML = ""
+    
+    if request.method == 'POST':
+        pass
 
-# Vehicle reservation pdf generation
-#return rentalAgreement(reservation_id)
+    else:
+        reservationsTableData = get_reservations_tableData()
+        for i, reservation in enumerate(reservationsTableData):
+            reservation = list(reservation)  # Convert tuple to list
+            email = get_emailData_by_customerid(reservation[5])
+            reservation.append(email)
+            reservationsTableData[i] = reservation  # Update the list with the modified reservation
+        pickupHTML = generate_pickupdropoff_html(reservationsTableData)
+
+        reservationsTableData = get_reservations_tableData(True)
+        for i, reservation in enumerate(reservationsTableData):
+            reservation = list(reservation)  # Convert tuple to list
+            email = get_emailData_by_customerid(reservation[5])
+            reservation.append(email)
+            reservationsTableData[i] = reservation  # Update the list with the modified reservation
+        dropoffHTML = generate_pickupdropoff_html(reservationsTableData)
+
+    if session["Usertype"] == 1:
+        return render_template("pickup-dropoff.html", admin=admin_nav(), pickupHTML=pickupHTML, dropoffHTML=dropoffHTML)
+    return render_template("pickup-dropoff.html", pickupHTML=pickupHTML, dropoffHTML=dropoffHTML)
+
+
+@app.route('/GenerateRentalAgreement')
+def GenerateRentalAgreement():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    
+    reservation_id = 2
+    return generate.rentalAgreement(reservation_id)
 
 # Main entry point for the Flask app
 if __name__ == '__main__':

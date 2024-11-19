@@ -134,122 +134,105 @@ def rentalAgreement(reservation_id):
     conn = sqlite3.connect("car_rental.db")
     cursor = conn.cursor()
 
-    try:
-        # Fetch reservation details
-        cursor.execute("""
-            SELECT r.ReservationID, r.VehicleID, r.UserID, r.PlanID, r.ReserveStartDate, 
-                   r.ReserveEndDate, r.PickUpLocation, r.DropOffLocation, r.InvoiceID, 
-                   v.Make, v.Model, v.Year, v.Type, v.Mileage, v.Transmission, v.NumDoors, 
-                   v.DriveTrain, v.Description
-            FROM Reservations r
-            JOIN Vehicles v ON r.VehicleID = v.VehicleID
-            WHERE r.ReservationID = ?
-        """, (reservation_id,))
-        reservation = cursor.fetchone()
+    # Fetch reservation details
+    cursor.execute("""
+        SELECT r.ReservationID, r.VehicleID, r.UserID, r.PlanID, r.ReserveStartDate, 
+                r.ReserveEndDate, r.PickUpLocation, r.DropOffLocation, r.InvoiceID, 
+                v.Make, v.Model, v.Year, v.Type, v.Mileage, v.Transmission, v.NumDoors, 
+                v.DriveTrain, v.Description
+        FROM Reservations r
+        JOIN Vehicles v ON r.VehicleID = v.VehicleID
+        WHERE r.ReservationID = ?
+    """, (reservation_id,))
+    reservation = cursor.fetchone()
 
-        # Fetch pickup and dropoff location details
-        cursor.execute("SELECT Address, Phone FROM Locations WHERE LocationID = ?", (reservation[6],))
-        pickup_details = cursor.fetchone()
-        pickup_address, pickup_phone = pickup_details[0], pickup_details[1]
+    # Fetch pickup and dropoff location details
+    cursor.execute("SELECT Address, Phone FROM Locations WHERE LocationID = ?", (reservation[7],))
+    pickup_details = cursor.fetchone()
+    pickup_address, pickup_phone = pickup_details[0], pickup_details[1]
 
-        cursor.execute("SELECT Address, Phone FROM Locations WHERE LocationID = ?", (reservation[7],))
-        dropoff_details = cursor.fetchone()
-        dropoff_address, dropoff_phone = dropoff_details[0], dropoff_details[1]
+    cursor.execute("SELECT Address, Phone FROM Locations WHERE LocationID = ?", (reservation[8],))
+    dropoff_details = cursor.fetchone()
+    dropoff_address, dropoff_phone = dropoff_details[0], dropoff_details[1]
+    
+    conn.close()
 
-        # Generate the PDF in-memory
-        buffer = BytesIO()
-        pdf = canvas.Canvas(buffer, pagesize=letter)
-        pdf.setTitle("Rental Agreement")
+    # Generate the PDF in-memory
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    pdf.setTitle("Rental Agreement")
 
-        # Title
-        pdf.setFont("Helvetica-Bold", 16)
-        pdf.drawString(250, 750, "Rental Agreement")
+    # Title
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(250, 750, "Rental Agreement")
 
-        # Reservation and Vehicle Details
-        y = 710
-        pdf.setFont("Helvetica-Bold", 14)
-        pdf.drawString(50, y, "Reservation and Vehicle Details:")
-        y -= 20
+    # Reservation and Vehicle Details
+    y = 710
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(50, y, "Reservation and Vehicle Details:")
+    y -= 20
 
-        def add_bold_descriptor(label, value):
-            nonlocal y
-            pdf.setFont("Helvetica-Bold", 12)
-            pdf.drawString(50, y, label)
-            pdf.setFont("Helvetica", 12)
-            pdf.drawString(200, y, value)
-            y -= 20
-            
+    def add_bold_descriptor(label, value):
+        nonlocal y
         pdf.setFont("Helvetica-Bold", 12)
-        add_bold_descriptor("Reservation ID:", str(reservation[0]))
-        add_bold_descriptor("Vehicle:", f"{reservation[9]} {reservation[10]} ({reservation[11]})")
-        add_bold_descriptor("Type:", reservation[12])
-        add_bold_descriptor("Mileage:", f"{reservation[13]} miles")
-        add_bold_descriptor("Transmission:", reservation[14])
-        add_bold_descriptor("Doors:", str(reservation[15]))
-        add_bold_descriptor("DriveTrain:", reservation[16])
-
-        pdf.setFont("Helvetica-Bold", 12)
-        y = draw_wrapped_text(pdf, f"Description:", 50, y, line_height=16)
+        pdf.drawString(50, y, label)
         pdf.setFont("Helvetica", 12)
-        y -= 10
-        y = draw_wrapped_text(pdf, reservation[17], 100, y)
-
-        # Rental Dates
-        y -= 30
-        pdf.setFont("Helvetica-Bold", 14)
-        pdf.drawString(50, y, "Rental Dates:")
+        pdf.drawString(200, y, value)
         y -= 20
-        pdf.setFont("Helvetica-Bold", 12)
-        add_bold_descriptor("Start:", reservation[4])
-        add_bold_descriptor("Pickup Location:", pickup_address)
-        add_bold_descriptor("Phone:", pickup_phone)
-        y -= 20
-        add_bold_descriptor("End:", reservation[5])
-        add_bold_descriptor("Dropoff Location:", dropoff_address)
-        add_bold_descriptor("Phone:", dropoff_phone)
+        
+    pdf.setFont("Helvetica-Bold", 12)
+    add_bold_descriptor("Reservation ID:", str(reservation[0]))
+    add_bold_descriptor("Vehicle:", f"{reservation[9]} {reservation[10]} ({reservation[11]})")
+    add_bold_descriptor("Type:", reservation[12])
+    add_bold_descriptor("Mileage:", f"{reservation[13]} miles")
+    add_bold_descriptor("Transmission:", reservation[14])
+    add_bold_descriptor("Doors:", str(reservation[15]))
+    add_bold_descriptor("DriveTrain:", reservation[16])
 
-        # Billing Information
-        y -= 30
-        pdf.setFont("Helvetica-Bold", 14)
-        pdf.drawString(50, y, "Billing Information:")
-        y -= 20
-        pdf.setFont("Helvetica-Bold", 12)
-        add_bold_descriptor("Invoice ID:", str(reservation[8]))
+    pdf.setFont("Helvetica-Bold", 12)
+    y = draw_wrapped_text(pdf, f"Description:", 50, y, line_height=16)
+    pdf.setFont("Helvetica", 12)
+    y -= 10
+    y = draw_wrapped_text(pdf, reservation[17], 100, y)
 
+    # Rental Dates
+    y -= 30
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(50, y, "Rental Dates:")
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 12)
+    add_bold_descriptor("Start:", reservation[4])
+    add_bold_descriptor("Pickup Location:", pickup_address)
+    add_bold_descriptor("Phone:", pickup_phone)
+    y -= 20
+    add_bold_descriptor("End:", reservation[5])
+    add_bold_descriptor("Dropoff Location:", dropoff_address)
+    add_bold_descriptor("Phone:", dropoff_phone)
 
-        # Signature Block (sticky bottom)
-        pdf.setFont("Helvetica", 12)
-        pdf.drawString(70, 130, "Customer Signature: ________________________")
-        pdf.drawString(350, 130, "Date: _______________")
-        y -= 10
-        pdf.drawString(70, 110, "Agent Signature:    __________________________")
-        pdf.drawString(350, 110, "Date: _______________")
-
-        # Save the PDF
-        pdf.save()
-        buffer.seek(0)
-
-        # Create a Flask response
-        response = make_response(buffer.getvalue())
-        response.headers['Content-Type'] = 'application/pdf'
-        response.headers['Content-Disposition'] = f'inline; filename=rental_agreement_{reservation_id}.pdf'
-        return response
-
-    finally:
-        # Ensure the connection is closed
-        conn.close()
+    # Billing Information
+    y -= 30
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(50, y, "Billing Information:")
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 12)
+    add_bold_descriptor("Invoice ID:", str(reservation[8]))
 
 
+    # Signature Block (sticky bottom)
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(70, 130, "Customer Signature: ________________________")
+    pdf.drawString(350, 130, "Date: _______________")
+    y -= 10
+    pdf.drawString(70, 110, "Agent Signature:    __________________________")
+    pdf.drawString(350, 110, "Date: _______________")
 
-# Example Flask endpoint
-# Uncomment if integrating with a Flask app
-"""from flask import Flask
-app = Flask(__name__)
+    # Save the PDF
+    pdf.save()
+    buffer.seek(0)
 
-@app.route('/rental_agreement/<int:reservation_id>')
-def rental_agreement(reservation_id):
-    # http://127.0.0.1:5000/rental_agreement/1
-    return rentalAgreement(reservation_id)
-
-if __name__ == '__main__':
-    app.run(debug=True)"""
+    # Create a Flask response
+    response = make_response(buffer.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename=rental_agreement_{reservation_id}.pdf'
+    
+    return response
