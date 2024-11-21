@@ -602,35 +602,72 @@ def debug_session():
 
   
 # Route to pick up a car
-@app.route("/pickup/<int:user_id>", methods=['POST'])
+@app.route('/pickup', methods=['POST', 'GET'])
 def pickup_car_route(user_id):
-    if "UserID" not in session or session["UserID"] != user_id:
-        return jsonify({'error': 'Unauthorized access'}), 403
+    # Check if the user is logged in and redirect if not
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    
+    user_id = session["UserID"]
 
-    try:
-        success = pick_up_car(user_id)
-        if success:
-            return jsonify({'message': 'Car picked up successfully!'}), 200
-        else:
-            return jsonify({'error': 'No valid reservation found for pickup'}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    result = pick_up_car(user_id)
 
-      
-# Route to drop off a car
-@app.route("/dropoff/<int:user_id>", methods=['POST'])
-def dropoff_car_route(user_id):
-    if "UserID" not in session or session["UserID"] != user_id:
-        return jsonify({'error': 'Unauthorized access'}), 403
+    # Prepare context for rendering
+    context = {
+        "pickupHTML": "",
+        "dropoffHTML": "",
+        "pickup_message": None,
+    }
 
-    try:
-        success = drop_off_car(user_id)
-        if success:
-            return jsonify({'message': 'Car dropped off successfully!'}), 200
-        else:
-            return jsonify({'error': 'No valid reservation found for dropoff'}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    if result["status"] == "UnsignedContract":
+        return redirect(url_for('GenerateRentalAgreement', reservation_id=result["reservation_id"]))
+
+    if result["status"] == "Success":
+        context["pickup_message"] = "Car picked up successfully!"
+
+    if result["status"] == "NoReservation":
+        context["pickup_message"] = "No active reservations found."
+
+    return render_template("pickup-dropoff.html", **context)
+         
+@app.route('/dropoff', methods=['POST', 'GET'])
+def dropoff_car_route():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+
+    user_id = session["UserID"]
+    context = {
+        "pickupHTML": "",
+        "dropoffHTML": "",
+        "dropoff_message": None,
+    }
+
+    if request.method == "POST":
+        try:
+            # Get new mileage from the form
+            new_mileage = request.form.get("new_mileage", type=int)
+            if not new_mileage or new_mileage <= 0:
+                context["dropoff_message"] = "Invalid or missing mileage value."
+                return render_template("pickup-dropoff.html", **context)
+
+            # Perform drop-off and prepare invoice
+            result = drop_off_car(user_id, new_mileage)
+
+            if result["status"] == "Success":
+                context["dropoff_message"] = result["message"]
+
+                # Generate invoice
+
+            elif result["status"] == "NoReservation":
+                context["dropoff_message"] = "No active reservations found for drop-off."
+
+            return render_template("pickup-dropoff.html", **context)
+
+        except Exception as e:
+            context["dropoff_message"] = f"Server error: {str(e)}"
+            return render_template("pickup-dropoff.html", **context)
+
+    return render_template("pickup-dropoff.html", **context)
       
       
 @app.route('/delete_vehicle', methods=['POST'])
