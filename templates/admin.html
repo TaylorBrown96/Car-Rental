@@ -24,6 +24,102 @@
 </head>
 
 <body>
+    <div class="modal fade" id="generateReportModal" tabindex="-1" aria-labelledby="generateReportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="generateReportModalLabel">Generate Report</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="generateReportForm">
+                <!-- Start Date -->
+                <div class="mb-3">
+                  <label for="start_date" class="form-label">Start Date:</label>
+                  <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    class="form-control"
+                    onchange="validateDateRange()"
+                  />
+                </div>
+      
+                <!-- End Date -->
+                <div class="mb-3">
+                  <label for="end_date" class="form-label">End Date:</label>
+                  <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                    class="form-control"
+                    onchange="validateDateRange()"
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="generateReportButton" class="btn btn-primary" disabled onclick="submitReport()">Generate Report</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+        // Enable the Generate Report button only if both dates are selected
+        function validateDateRange() {
+          const startDate = document.getElementById('start_date').value;
+          const endDate = document.getElementById('end_date').value;
+          const generateButton = document.getElementById('generateReportButton');
+      
+          if (startDate && endDate) {
+            generateButton.disabled = false;
+          } else {
+            generateButton.disabled = true;
+          }
+        }
+      
+        // Submit the report request to the Flask backend
+        function submitReport() {
+          const startDate = document.getElementById('start_date').value;
+          const endDate = document.getElementById('end_date').value;
+      
+          if (startDate && endDate) {
+            // Create a FormData object with the date range
+            const formData = new FormData();
+            formData.append('startDate', startDate);
+            formData.append('endDate', endDate);
+      
+            // Send the payload to the Flask backend using fetch
+            fetch('/generate_report', {
+              method: 'POST', // Adjust the method to POST
+              body: formData, // Use FormData for compatibility with Flask
+            })
+              .then((response) => {
+                if (response.ok) {
+                  return response.blob(); // Expect a PDF file as the response
+                } else {
+                  throw new Error('Failed to generate the report');
+                }
+              })
+              .then((blob) => {
+                // Create a URL for the blob and initiate the download
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `report_${startDate}_to_${endDate}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.URL.revokeObjectURL(url);
+              })
+              .catch((error) => {
+                alert(`Error: ${error.message}`);
+              });
+          }
+        }
+      </script>
     <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
 		<div class="container"><a class="navbar-brand d-flex align-items-center" href="/products"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -75,14 +171,14 @@
                                         <div class="sb-sidenav-menu-heading" style="cursor: default;"><span>admin options</span></div>
                                         <!-- Customer Management Accordion Button -->
                                         <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="Customercollapse" data-bs-toggle="collapse" data-bs-target="#Customercollapse">
-                                            <div class="sb-nav-link-icon" style="cursor: default;"><i class="fa fa-gear"></i></div><span>Customer Management</span>
+                                            <div class="sb-nav-link-icon" style="cursor: default;"><i class="fa fa-gear"></i></div><span>Employee Management</span>
                                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                                         </a>
                                         <div id="Customercollapse" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                             <div class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link" id="createCustomer" href="#">Create New Customer</a>
+                                                <a class="nav-link" id="createCustomer" href="#">Create New Employee</a>
                                                 <a class="nav-link" id="modifyCustomer" href="#">Modify Existing</a>
-                                                <a class="nav-link" id="deleteCustomer" href="#">Delete Customer</a>
+                                                <a class="nav-link" id="deleteCustomer" href="#">Delete Employee</a>
                                             </div>
                                         </div>
                                         <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="collapseLayouts" data-bs-toggle="collapse" data-bs-target="#collapseLayouts">
@@ -97,25 +193,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div id="collapse2" class="collapse" aria-labelledby="heading2" data-bs-parent="#sidenavAccordion">
-                                            <div id="sidenavAccordionPages" class="sb-sidenav-menu-nested nav accordion">
-                                                <a class="nav-link collapsed" href="#" aria-expanded="false" aria-controls="pagesCollapseAuth" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth">
-                                                    <span>Menu Item</span>
-                                                    <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
-                                                </a>
-                                                <div id="pagesCollapseAuth" class="collapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                                    <div class="sb-sidenav-menu-nested nav">
-                                                        <a class="nav-link" href="#">Menu Item</a>
-                                                        <a class="nav-link" href="#">Menu Item</a>
-                                                        <a class="nav-link" href="#">Menu Item</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <!-- Generate Report Button -->
-                                    <a class="nav-link" href="/generate_report" type="button" style="none">
+                                    <a class="nav-link" type="button" style="none" data-bs-target="#generateReportModal" type="button" data-bs-toggle="modal">
                                         <div class="sb-nav-link-icon"><i class="fa fa-file-text"></i></div><span>Generate Report</span>
                                     </a>
                                 </div>
@@ -134,36 +213,36 @@
                         document.getElementById('createCustomer').addEventListener('click', function() {
                             document.getElementById('customerDataContent').innerHTML = `
                                 <form id="createCustomerForm">
-                                    <h3>Create New Customer</h3>
+                                    <h3>Create New Employee</h3>
 
                                     <!-- Name -->
                                     <div class="mb-3">
                                         <label for="customerName" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="customerName" placeholder="Enter customer name" >
+                                        <input type="text" class="form-control" id="customerName" placeholder="Enter employee name" >
                                     </div>
 
                                     <!-- Address -->
                                     <div class="mb-3">
                                         <label for="customerAddress" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="customerAddress" placeholder="Enter customer address" >
+                                        <input type="text" class="form-control" id="customerAddress" placeholder="Enter employee address" >
                                     </div>
 
                                     <!-- Phone -->
                                     <div class="mb-3">
                                         <label for="customerPhone" class="form-label">Phone</label>
-                                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter customer phone number" >
+                                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter employee phone number" >
                                     </div>
 
                                     <!-- Email -->
                                     <div class="mb-3">
                                         <label for="customerEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter customer email" >
+                                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter employee email" >
                                     </div>
 
                                     <!-- Age -->
                                     <div class="mb-3">
                                         <label for="customerAge" class="form-label">Age</label>
-                                        <input type="number" class="form-control" id="customerAge" placeholder="Enter customer age" >
+                                        <input type="number" class="form-control" id="customerAge" placeholder="Enter employee age" >
                                     </div>
 
                                     <!-- Gender -->
@@ -189,7 +268,7 @@
                                         <input type="file" class="form-control" id="userPhoto" accept="image/*" >
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary">Create Customer</button>
+                                    <button type="submit" class="btn btn-primary">Create employee</button>
                                 </form>
                             `;
 
@@ -242,44 +321,44 @@
                          // Listen for clicks on "Modify Customer Data"
                         document.getElementById('modifyCustomer').addEventListener('click', function() {
                             document.getElementById('customerDataContent').innerHTML = `
-                                <form id="modifyCustomerForm">
-                                    <h3>Modify Customer Data</h3>
+                                <form id="modifyCustomerForm" style="margin-bottom: 75px;">
+                                    <h3>Modify Employee Data</h3>
 
                                     <!-- Customer ID (Input for searching) -->
                                     <div class="mb-3">
-                                        <label for="userIDInput" class="form-label">Customer ID</label>
-                                        <input type="text" class="form-control" id="userIDInput" placeholder="Enter customer ID" >
-                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Customer Data</button>
+                                        <label for="userIDInput" class="form-label">Employee ID</label>
+                                        <input type="text" class="form-control" id="userIDInput" placeholder="Enter employee ID" >
+                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Employee Data</button>
                                     </div>
 
                                     <!-- Name -->
                                     <div class="mb-3">
                                         <label for="customerName" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="customerName" placeholder="Enter customer name" required disabled>
+                                        <input type="text" class="form-control" id="customerName" placeholder="Enter employee name" required disabled>
                                     </div>
 
                                     <!-- Address -->
                                     <div class="mb-3">
                                         <label for="customerAddress" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="customerAddress" placeholder="Enter customer address" >
+                                        <input type="text" class="form-control" id="customerAddress" placeholder="Enter employee address" >
                                     </div>
 
                                     <!-- Phone -->
                                     <div class="mb-3">
                                         <label for="customerPhone" class="form-label">Phone</label>
-                                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter customer phone number" >
+                                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter employee phone number" >
                                     </div>
 
                                     <!-- Email -->
                                     <div class="mb-3">
                                         <label for="customerEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter customer email" >
+                                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter employee email" >
                                     </div>
 
                                     <!-- Age -->
                                     <div class="mb-3">
                                         <label for="customerAge" class="form-label">Age</label>
-                                        <input type="number" class="form-control" id="customerAge" placeholder="Enter customer age" >
+                                        <input type="number" class="form-control" id="customerAge" placeholder="Enter employee age" >
                                     </div>
 
                                     <!-- Gender -->
@@ -309,7 +388,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-info">Modify Customer</button>
+                                    <button type="submit" class="btn btn-info">Modify Employee</button>
                                 </form>
                             `;
 
@@ -417,37 +496,37 @@
                         document.getElementById('deleteCustomer').addEventListener('click', function () {
                             document.getElementById('customerDataContent').innerHTML = `
                                 <form id="deleteCustomerForm">
-                                    <h3>Deactivate Customer Data</h3>
+                                    <h3>Deactivate Employee Data</h3>
 
                                     <!-- Customer ID (Input for searching) -->
                                     <div class="mb-3">
-                                        <label for="userIDInput" class="form-label">Customer ID</label>
-                                        <input type="text" class="form-control" id="userIDInput" placeholder="Enter customer ID" required>
-                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Customer Data</button>
+                                        <label for="userIDInput" class="form-label">Employee ID</label>
+                                        <input type="text" class="form-control" id="userIDInput" placeholder="Enter employee ID" required>
+                                        <button type="button" id="fetchCustomerBtn" class="btn btn-primary mt-3">Fetch Employee Data</button>
                                     </div>
 
                                     <!-- Display Customer Data -->
                                     <div id="customerDetails" style="display: none;">
                                         <div class="mb-3">
                                             <label for="customerName" class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="customerName" placeholder="Customer name" disabled>
+                                            <input type="text" class="form-control" id="customerName" placeholder="Employee name" disabled>
                                         </div>
                                         <div class="mb-3">
                                             <label for="customerAddress" class="form-label">Address</label>
-                                            <input type="text" class="form-control" id="customerAddress" placeholder="Customer address" disabled>
+                                            <input type="text" class="form-control" id="customerAddress" placeholder="Employee address" disabled>
                                         </div>
                                         <div class="mb-3">
                                             <label for="customerPhone" class="form-label">Phone</label>
-                                            <input type="tel" class="form-control" id="customerPhone" placeholder="Customer phone" disabled>
+                                            <input type="tel" class="form-control" id="customerPhone" placeholder="Employee phone" disabled>
                                         </div>
                                         <div class="mb-3">
                                             <label for="customerEmail" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="customerEmail" placeholder="Customer email" disabled>
+                                            <input type="email" class="form-control" id="customerEmail" placeholder="Employee email" disabled>
                                         </div>
                                         <!-- Add more fields as needed for confirmation -->
 
                                         <!-- Deactivate Button -->
-                                        <button type="button" class="btn btn-danger mt-3" id="deactivateCustomerBtn">Deactivate Customer</button>
+                                        <button type="button" class="btn btn-danger mt-3" id="deactivateCustomerBtn">Deactivate Employee</button>
                                     </div>
                                 </form>
                             `;
@@ -562,7 +641,7 @@
                         // Listen for clicks on "Create New vehicle"
                         document.getElementById('createCar').addEventListener('click', function() {
                             document.getElementById('customerDataContent').innerHTML = `
-                                <form id="createVehicleForm">
+                                <form id="createVehicleForm" style="margin-bottom: 75px;">
                                     <h3>Create New Vehicle</h3>
                     
                                     <!-- Make -->
@@ -911,7 +990,7 @@
                          // Listen for clicks on "Modify vehicle Data"
                         document.getElementById('modifyCar').addEventListener('click', function() {
                             document.getElementById('customerDataContent').innerHTML = `
-                                <form id="modifyvehicleForm">
+                                <form id="modifyvehicleForm" style="margin-bottom: 75px;">
                                     <h3>Modify vehicle Data</h3>
                     
                                     <!-- vehicle ID (Input for searching) -->
@@ -1479,24 +1558,23 @@
             </div>
         </div>
     </section>
-    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
+    <footer class="bg-primary-gradient" style="position: fixed; left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%; max-height:100px;">
         <div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
-            <hr>
-            <div class="text-muted d-flex justify-content-between align-items-center pt-3">
-                <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
-            </div>
+          <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+            <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
+          </div>
         </div>
-    </footer>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bs-init.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bold-and-bright.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/Simple-Slider.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-</body>
-
-</html>
+      </footer>
+      <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
+      <script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/theme.js')}}"></script>
+    </body>
+    
+    </html>

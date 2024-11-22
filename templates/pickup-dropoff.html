@@ -21,9 +21,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider-swiper-bundle.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Slider.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Tamplate-SB-Admin-on-BSS.css') }}">
+    <script>
+        $(window).on('load', function() {
+            $('#errorModal').modal('show');
+        });
+    </script>
 </head>
 
 <body>
+    {{ modal }}
     {{ pickup_modal_html|safe }}
     {{ dropoff_modal_html|safe }}
 
@@ -70,12 +76,14 @@
                         <div class="col-xl-10 col-xxl-9" style="width: 100%;">
                             <h1 style="text-align: center;font-weight: bold;font-size: 46px;">Pickup</h1>
                             <div class="card shadow">
+                                <form method="POST" action="{{ url_for('pickupdropoff') }}">
                                 <div class="card-header d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
                                     <h5 class="display-6 text-nowrap text-capitalize mb-0">Find Reservations</h5>
-                                    <div class="input-group input-group-sm w-auto"><input class="form-control form-control-sm" type="text" placeholder="Enter Customer Email"><button class="btn btn-outline-primary btn-sm" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search mb-1">
+                                    <div class="input-group input-group-sm w-auto"><input class="form-control form-control-sm" type="text" placeholder="Enter Customer Email" name="dropoffemail" value="" hidden><input class="form-control form-control-sm" type="text" placeholder="Enter Customer Email" name="pickupemail"><button class="btn btn-outline-primary btn-sm" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search mb-1">
                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                                             </svg></button></div>
                                 </div>
+                                </form>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-striped table-hover">
@@ -108,12 +116,14 @@
                         <div class="col-xl-10 col-xxl-9" style="width: 100%;">
                             <h1 style="text-align: center;font-weight: bold;font-size: 46px;">Drop Off</h1>
                             <div class="card shadow">
+                                <form method="POST" action="{{ url_for('pickupdropoff') }}">
                                 <div class="card-header d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
                                     <h5 class="display-6 text-nowrap text-capitalize mb-0">Complete Reservation</h5>
-                                    <div class="input-group input-group-sm w-auto"><input class="form-control form-control-sm" type="text" placeholder="Enter Customer Email"><button class="btn btn-outline-primary btn-sm" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search mb-1">
+                                    <div class="input-group input-group-sm w-auto"><input class="form-control form-control-sm" type="text" placeholder="Enter Customer Email" name="pickupemail" value="" hidden><input class="form-control form-control-sm" type="text" placeholder="Enter Customer Email" name="dropoffemail"><button class="btn btn-outline-primary btn-sm" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search mb-1">
                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                                             </svg></button></div>
                                 </div>
+                                </form>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-striped table-hover">
@@ -142,27 +152,23 @@
             </div>
         </div>
     </section>
-    <a href="/GenerateRentalAgreement">
-        <button class="btn btn-primary shadow" type="button" style="margin-left: 41%; margin-top: 25px; margin-bottom: 25px;">Generate Rental Agreement Example For Invoice #2</button>
-    </a>
-    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
-		<div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
-			<hr>
-			<div class="text-muted d-flex justify-content-between align-items-center pt-3">
-				<p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
-			</div>
-		</div>
-	</footer>
-	<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
-	<script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/theme.js')}}"></script>
-</body>
-
-</html>
+    <footer class="bg-primary-gradient" style="position: fixed; left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%; max-height:100px;">
+        <div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
+          <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+            <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
+          </div>
+        </div>
+      </footer>
+      <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
+      <script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/theme.js')}}"></script>
+    </body>
+    
+    </html>

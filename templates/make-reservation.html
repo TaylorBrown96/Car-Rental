@@ -108,6 +108,10 @@
                                     <input class="form-control" type="text" id="email-1" name="address" placeholder="Address" style="margin-top: 14px;">
                                     <label class="form-label" style="margin-top: 10px;margin-left: 10px;">Drivers License Photo</label>
                                     <input class="form-control" type="file" name="driversLicensePhoto">
+                                    <select name="dropofflocation" class="form-select" style="margin-top: 10px;">
+                                        <option value="0" disabled selected>Select Dropoff Location</option>
+                                        {{ locationOptions}}
+                                    </select>
                                 </div>
                                 <div>
                                     <button class="btn btn-primary d-block w-100" type="submit">Make Reservation</button>
@@ -119,24 +123,23 @@
             </div>
         </div>
     </section>
-    <footer class="bg-primary-gradient" style="position: static;left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%;">
-		<div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
-			<hr>
-			<div class="text-muted d-flex justify-content-between align-items-center pt-3">
-				<p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
-			</div>
-		</div>
-	</footer>
-	<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
-	<script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/theme.js')}}"></script>
-</body>
-
-</html>
+    <footer class="bg-primary-gradient" style="position: fixed; left: 0;bottom: 0;color: rgba(255,255,255,0);text-align: center;width: 100%; max-height:100px;">
+        <div class="container py-4 py-lg-5" style="--bs-secondary: #A599B5;--bs-secondary-rgb: 165,153,181;">
+          <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+            <p class="mb-0" style="margin: auto;">Copyright © 2024 Car Rental</p>
+          </div>
+        </div>
+      </footer>
+      <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/bs-init.js')}}"></script>
+      <script src="{{ url_for('static', filename='/js/bold-and-bright.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20-1.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Ludens---Index-v2-with-Backend--Frontend-Filters-Ludens---1-Index-Table-with-Search--Sort-Filters-v20.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Simple-Slider-swiper-bundle.min.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/Simple-Slider.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/theme.js')}}"></script>
+    </body>
+    
+    </html>
