@@ -401,7 +401,7 @@ def dropoff_modal_html(ReservationID):
     else:
         dropoff_html += Markup("""
                     </div>
-                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-success" type="button">Confirm Drop Off</button></div>
+                    <div class="modal-footer"><button class="btn btn-warning" type="button" data-bs-dismiss="modal" style="margin-right: 47%; margin-top: 15px;">Generate Rental Bill</button><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-success" type="button">Confirm Drop Off</button></div>
                 </div>
             </div>
         </div>""")
