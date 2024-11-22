@@ -753,6 +753,8 @@ def pickupdropoff():
     
     pickupHTML = ""
     dropoffHTML = ""
+    pickup_modalhtml = ""
+    dropoff_modalhtml = ""
     
     if request.method == 'POST':
         pass
@@ -760,14 +762,16 @@ def pickupdropoff():
     else:
         reservationsTableData = get_reservations_tableData()
         for i, reservation in enumerate(reservationsTableData):
+            pickup_modalhtml += pickup_modal_html(reservation[0])
             reservation = list(reservation)  # Convert tuple to list
             email = get_emailData_by_customerid(reservation[5])
             reservation.append(email)
             reservationsTableData[i] = reservation  # Update the list with the modified reservation
         pickupHTML = generate_pickupdropoff_html(reservationsTableData)
 
-        reservationsTableData = get_reservations_tableData(True)
+        reservationsTableData = get_reservations_tableData(pickedup=True)
         for i, reservation in enumerate(reservationsTableData):
+            dropoff_modalhtml += dropoff_modal_html(reservation[0])
             reservation = list(reservation)  # Convert tuple to list
             email = get_emailData_by_customerid(reservation[5])
             reservation.append(email)
@@ -775,8 +779,8 @@ def pickupdropoff():
         dropoffHTML = generate_pickupdropoff_html(reservationsTableData)
 
     if session["Usertype"] == 1:
-        return render_template("pickup-dropoff.html", admin=admin_nav(), pickupHTML=pickupHTML, dropoffHTML=dropoffHTML)
-    return render_template("pickup-dropoff.html", pickupHTML=pickupHTML, dropoffHTML=dropoffHTML)
+        return render_template("pickup-dropoff.html", admin=admin_nav(), pickupHTML=pickupHTML, dropoffHTML=dropoffHTML, pickup_modal_html=pickup_modalhtml, dropoff_modal_html=dropoff_modalhtml)
+    return render_template("pickup-dropoff.html", pickupHTML=pickupHTML, dropoffHTML=dropoffHTML, pickup_modal_html=pickup_modal_html, dropoff_modal_html=dropoff_modal_html)
 
 
 @app.route('/GenerateRentalAgreement')
