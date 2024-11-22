@@ -273,9 +273,138 @@ def generate_pickupdropoff_html(reservationsTableData):
                             <td class="text-truncate" style="max-width: 200px;">{Email}</td>
                             <td class="text-truncate" style="max-width: 200px;">{ReserveStartDate}</td>
                             <td class="text-truncate" style="max-width: 200px;">{ReserveEndDate}</td>
-                            <td class="text-center"><a href="/reservation/{ReservationID}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-eye-fill fs-5 text-primary">
+                            <td class="text-center"><button data-bs-target="#modal-{ReservationID}" type="button" data-bs-toggle="modal"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-eye-fill fs-5 text-primary">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
-                            </svg></a></td>
+                            </svg></button></td>
                         </tr>""").format(ReservationID=reservation[0], VehicleID=reservation[1], InvoiceID=reservation[4], Email=reservation[6], ReserveStartDate=reservation[2], ReserveEndDate=reservation[3])
     return html
+
+
+def pickup_modal_html(ReservationID):
+    reservation_data = get_reservation_by_id(ReservationID)
+    vehicle_data = get_vehicle_by_id(reservation_data[1])
+    pickuploc = get_location_by_id(reservation_data[10])[1]
+    dropoffloc = get_location_by_id(reservation_data[11])[1]
+    pickup_html = Markup("""
+        <div class="modal fade" role="dialog" tabindex="-1" id="modal-{ReservationID}">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Customer Pickup</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h1 style="margin-bottom: 15px;">Vehicle Data:</h1>
+                                    <p>Make:&nbsp;{Make}</p>
+                                    <p>Model:&nbsp;{Model}</p>
+                                    <p>Year:&nbsp;{Year}</p>
+                                    <p>Type:&nbsp;{Type}</p>
+                                    <p>Mileage:&nbsp;{Mileage}</p>
+                                    <p>Transmission:&nbsp;{Trans}</p>
+                                    <p>Drive Train:&nbsp;{Drive}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h1 style="margin-bottom: 15px;">Reservation Data:</h1>
+                                    <p>Start Date:&nbsp;{ReservationStart}</p>
+                                    <p>End Date:&nbsp;{ReservationEnd}</p>
+                                    <p>Pickup Location:&nbsp;{pickuploc}</p>
+                                    <p>Drop Off Location:&nbsp;{dropoffloc}</p>
+                                    <p style="margin-bottom: 30px;">Estimated Total:&nbsp;{estTotal}</p>""").format(Make=vehicle_data[1], Model=vehicle_data[2], Year=vehicle_data[3], Type=vehicle_data[4], Mileage=vehicle_data[5], Trans=vehicle_data[6], Drive=vehicle_data[15], 
+                                          ReservationID=ReservationID, ReservationStart=reservation_data[6], ReservationEnd=reservation_data[7], estTotal="%0.2f" % (reservation_data[15]), pickuploc=pickuploc, dropoffloc=dropoffloc)
+                                    
+    if reservation_data[4] == "False":                                
+        pickup_html += Markup("""<p>Signed Rental Agreement Status:&nbsp;<label style="color: Red; font-size: 2rem;">&nbsp;&nbsp;Not Signed</label></p>
+                              </div>
+                            </div>
+                        </div>
+                        <form style="margin-top: 20px;margin-bottom: 20px;">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4" style="width: 32%;"><label class="col-form-label" style="font-weight: bold;font-size: 20px;">Upload Signed Rental Agreement</label></div>
+                                    <div class="col-md-4" style="width: 43%;"><input class="form-control" type="file"></div>
+                                    <div class="col-md-4" style="width: 25%;"><button class="btn btn-primary" type="button">Upload Document</button></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-primary" type="button" data-bs-dismiss="modal" style="margin-right: 43%;">Generate Rental Agreement</button><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-light" type="button" disabled>Confirm Pickup</button></div>
+                </div>
+            </div>
+        </div>""")
+    else:
+        pickup_html += Markup("""<p>Signed Rental Agreement Status:&nbsp;<label style="color: Green; font-size: 2rem;">&nbsp;&nbsp;Signed</label></p>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-success" type="button">Confirm Pickup</button></div>
+                </div>
+            </div>
+        </div>""")
+
+    return pickup_html
+
+
+def dropoff_modal_html(ReservationID):
+    reservation_data = get_reservation_by_id(ReservationID)
+    vehicle_data = get_vehicle_by_id(reservation_data[1])
+    paymentStatus = get_payment_status(ReservationID)
+    pickuploc = get_location_by_id(reservation_data[10])[1]
+    dropoffloc = get_location_by_id(reservation_data[11])[1]
+    
+    print(vehicle_data)
+    
+    dropoff_html = Markup("""<div class="modal fade" role="dialog" tabindex="-1" id="modal-{ReservationID}">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Customer Drop Off</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h1 style="margin-bottom: 15px;">Vehicle Data:</h1>
+                                    <p>Make:&nbsp;{Make}</p>
+                                    <p>Model:&nbsp;{Model}</p>
+                                    <p>Year:&nbsp;{Year}</p>
+                                    <p>Type:&nbsp;{Type}</p>
+                                    <p>Mileage:&nbsp;{Mileage}</p>
+                                    <p>Transmission:&nbsp{Trans}</p>
+                                    <p>Drive Train:&nbsp;{Drive}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h1 style="margin-bottom: 15px;">Reservation Data:</h1>
+                                    <p>Start Date:&nbsp;{ReservationStart}</p>
+                                    <p>End Date:&nbsp;{ReservationEnd}</p>
+                                    <p>Pickup Location:&nbsp;{pickuploc}</p>
+                                    <p>Drop Off Location:&nbsp;{dropoffloc}</p>
+                                    <p style="margin-bottom: 60px;">Estimated Total:&nbsp;{estTotal}</p>
+                                    <p>Payment Status:&nbsp;{paymentStatus}</p>
+                                </div>
+                            </div>
+                        </div>""").format(Make=vehicle_data[1], Model=vehicle_data[2], Year=vehicle_data[3], Type=vehicle_data[4], Mileage=vehicle_data[5], Trans=vehicle_data[6], Drive=vehicle_data[15], 
+                                          ReservationID=ReservationID, ReservationStart=reservation_data[6], ReservationEnd=reservation_data[7], estTotal="%0.2f" % (reservation_data[15]), paymentStatus=paymentStatus, pickuploc=pickuploc, dropoffloc=dropoffloc)
+                        
+    if paymentStatus == "none" or paymentStatus == "Partial":
+        dropoff_html += Markup("""
+                        <form style="margin-top: 20px;margin-bottom: 20px;"><input class="form-control" type="number" placeholder="Payment Amount" style="margin-bottom: 15px;" href="/updateReservation/{ReservationID}"><input class="form-control" type="number" placeholder="Returning Mileage">
+                            <button class="btn btn-primary" type="submit" style="margin-top: 15px;">Submit Vehicle Data</button><button class="btn btn-warning" type="button" data-bs-dismiss="modal" style="margin-left: 1%; margin-top: 15px;">Generate Rental Bill</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>""")
+    else:
+        dropoff_html += Markup("""
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-success" type="button">Confirm Drop Off</button></div>
+                </div>
+            </div>
+        </div>""")
+        
+
+    return dropoff_html

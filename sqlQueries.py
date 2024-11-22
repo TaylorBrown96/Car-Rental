@@ -474,6 +474,16 @@ def get_reservationid_by_customerid(customerid, vehicleid, startdate, enddate):
     return data[0] if data else None
 
 
+def get_reservation_by_id(reservationid):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Reservations WHERE ReservationID = ?", (reservationid,))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data
+
+
 def get_reservations_tableData(numRows=5, pickedup=False):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -488,6 +498,16 @@ def get_emailData_by_customerid(customer_id):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT Email FROM Customers WHERE CustomerID = ?", (customer_id,))
+    data = cursor.fetchone()
+    conn.close()
+    
+    return data[0] if data else None
+
+
+def get_payment_status(reservation_id):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT PaymentStatus FROM Invoice WHERE ReservationID = ?", (reservation_id,))
     data = cursor.fetchone()
     conn.close()
     

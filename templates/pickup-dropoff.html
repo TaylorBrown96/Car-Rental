@@ -24,86 +24,10 @@
 </head>
 
 <body>
-    <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Customer Pickup</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h1 style="margin-bottom: 15px;">Vehicle Data:</h1>
-                                <p>Make:&nbsp;</p>
-                                <p>Model:&nbsp;</p>
-                                <p>Year:&nbsp;</p>
-                                <p>Type:&nbsp;</p>
-                                <p>Mileage:&nbsp;</p>
-                                <p>Transmission:&nbsp;</p>
-                                <p>Drive Train:&nbsp;</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h1 style="margin-bottom: 15px;">Reservation Data:</h1>
-                                <p>Start Date:&nbsp;</p>
-                                <p>End Date:&nbsp;</p>
-                                <p>Pickup Location:&nbsp;</p>
-                                <p>Drop Off Location:&nbsp;</p>
-                                <p style="margin-bottom: 60px;">Estimated Total:&nbsp;</p>
-                                <p>Signed Rental Agreement Status:&nbsp;</p>
-                            </div>
-                        </div>
-                    </div>
-                    <form style="margin-top: 20px;margin-bottom: 20px;">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4" style="width: 32%;"><label class="col-form-label" style="font-weight: bold;font-size: 20px;">Upload Signed Rental Agreement</label></div>
-                                <div class="col-md-4" style="width: 43%;"><input class="form-control" type="file"></div>
-                                <div class="col-md-4" style="width: 25%;"><button class="btn btn-primary" type="button">Upload Document</button></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer"><button class="btn btn-primary" type="button" data-bs-dismiss="modal" style="margin-right: 43%;">Generate Rental Agreement</button><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-success" type="button">Confirm Pickup</button></div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" role="dialog" tabindex="-1" id="modal-2">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Customer Drop Off</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h1 style="margin-bottom: 15px;">Vehicle Data:</h1>
-                                <p>Make:&nbsp;</p>
-                                <p>Model:&nbsp;</p>
-                                <p>Year:&nbsp;</p>
-                                <p>Type:&nbsp;</p>
-                                <p>Mileage:&nbsp;</p>
-                                <p>Transmission:&nbsp;</p>
-                                <p>Drive Train:&nbsp;</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h1 style="margin-bottom: 15px;">Reservation Data:</h1>
-                                <p>Start Date:&nbsp;</p>
-                                <p>End Date:&nbsp;</p>
-                                <p>Pickup Location:&nbsp;</p>
-                                <p>Drop Off Location:&nbsp;</p>
-                                <p style="margin-bottom: 60px;">Estimated Total:&nbsp;</p>
-                                <p>Payment Status:&nbsp;</p>
-                            </div>
-                        </div>
-                    </div>
-                    <form style="margin-top: 20px;margin-bottom: 20px;"><input class="form-control" type="number" placeholder="Payment Amount" style="margin-bottom: 15px;"><input class="form-control" type="number" placeholder="Returning Mileage"></form>
-                    <div class="modal-footer"><button class="btn btn-primary" type="button" data-bs-dismiss="modal" style="margin-right: 47%;">Generate Rental Bill</button><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-success" type="button">Confirm Drop Off</button></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{ pickup_modal_html|safe }}
+    {{ dropoff_modal_html|safe }}
+
+
     <nav class="navbar navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
 		<div class="container"><a class="navbar-brand d-flex align-items-center" href="/products"><span class="bs-icon-lg bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon" style="background: #A599B5;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-car-suv">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
