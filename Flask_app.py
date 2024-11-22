@@ -327,7 +327,11 @@ def admin():
         return redirect(url_for("index"))
     if session["Usertype"] == 1:
         username = session["Username"]
-        return render_template("admin.html", Username=username, admin=admin_nav())
+        
+        locationOptions = get_location_options()
+        locationOptions = generate_location_options(locationOptions)
+        
+        return render_template("admin.html", Username=username, admin=admin_nav(), locationOptions=locationOptions)
     else:
         return redirect(url_for("products"))
 

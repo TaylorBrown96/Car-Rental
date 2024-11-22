@@ -903,7 +903,10 @@
                                     <!-- LocationID -->
                                     <div class="mb-3">
                                         <label for="vehicleLoc" class="form-label">Location ID</label>
-                                        <input type="number" id="vehicleLoc" min="0" placeholder="Enter vehicle Location ID" >
+                                        <select id="vehicleLoc" class="form-select" style="margin-top: 10px;">
+                                            <option value="0" disabled selected>Select Vehicle Location</option>
+                                            {{ locationOptions }}
+                                        </select>
                                     </div>
                     
                                     <!-- Key Features -->

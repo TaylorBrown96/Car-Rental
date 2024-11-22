@@ -78,7 +78,7 @@ def mark_customer_inactive(user_id):
 def get_vehicle_information():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Vehicles")
+    cursor.execute("SELECT * FROM Vehicles WHERE Active = 'True'")
     data = cursor.fetchall()
     conn.close()
     return data
