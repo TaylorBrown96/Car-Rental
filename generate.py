@@ -4,6 +4,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.utils import simpleSplit
 from datetime import datetime
 import sqlite3
+from utils import *
 from io import BytesIO
 
 
@@ -235,4 +236,213 @@ def rentalAgreement(reservation_id):
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = f'inline; filename=rental_agreement_{reservation_id}.pdf'
     
+    return response
+
+
+def invoiceFromReservation(reservation_id):
+    conn = sqlite3.connect("car_rental.db")
+    cursor = conn.cursor()
+
+    # Step 1: Find the CustomerID for the given ReservationID
+    cursor.execute("""
+        SELECT CustomerID 
+        FROM Reservations
+        WHERE ReservationID = ?
+    """, (reservation_id,))
+    customer_data = cursor.fetchone()
+
+    if not customer_data:
+        conn.close()
+        return "Reservation not found.", 404
+
+    customer_id = customer_data[0]
+
+    # Step 2: Fetch all reservations for the CustomerID
+    cursor.execute("""
+        SELECT r.ReservationID, r.VehicleID, r.UserID, r.PlanID, r.ReserveStartDate,
+               r.ReserveEndDate, r.PickUpLocation, r.DropOffLocation, r.NumDays,
+               rp.Name, rp.Type, rp.Rate, v.Year || ' ' || v.Make || ' ' || v.Model AS VehicleName
+        FROM Reservations r
+        JOIN RentalPlans rp ON r.PlanID = rp.PlanID
+        JOIN Vehicles v ON r.VehicleID = v.VehicleID
+        WHERE r.CustomerID = ?
+    """, (customer_id,))
+    reservations = cursor.fetchall()
+
+    conn.close()
+
+    if not reservations:
+        return "No reservations found for the customer.", 404
+
+    # Step 3: Calculate totals and prepare data for the PDF
+    subtotal = 0
+    admin_fee = 30.00
+    reservations_data = []
+
+    for reservation in reservations:
+        (reservation_id, vehicle_id, user_id, plan_id, reserve_start_date, reserve_end_date,
+         pickup_location, dropoff_location, num_days, plan_name, plan_type, rate, vehicle_name) = reservation
+
+        total_price = round(num_days * rate, 2)  # Pre-tax total for this vehicle
+        subtotal += total_price
+        reservations_data.append({
+            "Vehicle": vehicle_name,
+            "Start": reserve_start_date,
+            "End": reserve_end_date,
+            "Days": num_days,
+            "Rate": rate,
+            "TotalPrice": total_price,
+            "Pickup": pickup_location,
+            "Dropoff": dropoff_location
+        })
+
+    # Calculate tax and total
+    tax = round(subtotal * 0.07, 2)
+    total = round(subtotal + admin_fee + tax, 2)
+
+    # Step 4: Generate the PDF
+    return generatePDF(
+        customer_id=customer_id,
+        reservations_data=reservations_data,
+        subtotal=subtotal,
+        admin_fee=admin_fee,
+        tax=tax,
+        total=total,
+        title="Consolidated Invoice"
+    )
+
+
+def invoiceForSingleVehicle(reservation_id):
+    conn = sqlite3.connect("car_rental.db")
+    cursor = conn.cursor()
+
+    # Step 1: Fetch reservation details for the given ReservationID
+    cursor.execute("""
+        SELECT r.ReservationID, r.VehicleID, r.UserID, r.PlanID, r.ReserveStartDate,
+               r.ReserveEndDate, r.PickUpLocation, r.DropOffLocation, r.NumDays,
+               rp.Name, rp.Type, rp.Rate, v.Year || ' ' || v.Make || ' ' || v.Model AS VehicleName
+        FROM Reservations r
+        JOIN RentalPlans rp ON r.PlanID = rp.PlanID
+        JOIN Vehicles v ON r.VehicleID = v.VehicleID
+        WHERE r.ReservationID = ?
+    """, (reservation_id,))
+    reservation = cursor.fetchone()
+
+    conn.close()
+
+    if not reservation:
+        return "Reservation not found.", 404
+
+    # Extract reservation details
+    (reservation_id, vehicle_id, user_id, plan_id, reserve_start_date, reserve_end_date,
+     pickup_location, dropoff_location, num_days, plan_name, plan_type, rate, vehicle_name) = reservation
+
+    # Calculate totals for the single vehicle
+    total_price = round(num_days * rate, 2)
+    admin_fee = 30.00
+    tax = round(total_price * 0.07, 2)
+    total = round(total_price + admin_fee + tax, 2)
+
+    # Prepare data for the PDF
+    reservations_data = [{
+        "Vehicle": vehicle_name,
+        "Start": reserve_start_date,
+        "End": reserve_end_date,
+        "Days": num_days,
+        "Rate": rate,
+        "TotalPrice": total_price,
+        "Pickup": pickup_location,
+        "Dropoff": dropoff_location
+    }]
+
+    # Generate the PDF
+    return generatePDF(
+        customer_id=user_id,
+        reservations_data=reservations_data,
+        subtotal=total_price,
+        admin_fee=admin_fee,
+        tax=tax,
+        total=total,
+        title="Single Vehicle Invoice"
+    )
+
+
+def generatePDF(customer_id, reservations_data, subtotal, admin_fee, tax, total, title):
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    pdf.setTitle(f"{title} - Customer #{customer_id}")
+
+    # Title
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(50, 750, f"{title} for Customer #{customer_id}")
+
+    # Table Headers
+    y = 720
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(50, y, "Vehicle")
+    pdf.drawString(200, y, "Start Date")
+    pdf.drawString(300, y, "End Date")
+    pdf.drawString(400, y, "Days")
+    pdf.drawString(450, y, "Rate/Day")
+    pdf.drawString(520, y, "Total")
+    y -= 20
+
+    # Table Rows
+    pdf.setFont("Helvetica", 12)
+    for data in reservations_data:
+        pdf.drawString(50, y, data["Vehicle"])
+        pdf.drawString(200, y, data["Start"])
+        pdf.drawString(300, y, data["End"])
+        pdf.drawString(400, y, str(data["Days"]))
+        pdf.drawString(450, y, f"${data['Rate']:.2f}")
+        pdf.drawString(520, y, f"${data['TotalPrice']:.2f}")
+        y -= 15
+
+        if y < 100:  # Add new page if needed
+            pdf.showPage()
+            y = 750
+
+    # Add totals section
+    y -= 30
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(50, y, "_" * 80)  # Separator line
+    y -= 20
+
+    pdf.drawString(400, y, "Subtotal:")
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(520, y, f"${subtotal:.2f}")
+    y -= 15
+
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(400, y, "Admin Fee:")
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(520, y, f"${admin_fee:.2f}")
+    y -= 15
+
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(400, y, "Tax (NC 7.00%):")
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(520, y, f"${tax:.2f}")
+    y -= 15
+
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(400, y, "Total:")
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(520, y, f"${total:.2f}")
+    y -= 20
+
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(50, y, "_" * 80)  # Separator line
+
+    # Footer
+    pdf.drawString(50, 100, "Thank you for renting with us!")
+
+    # Save PDF
+    pdf.save()
+    buffer.seek(0)
+
+    # Create Flask Response
+    response = make_response(buffer.getvalue())
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = f"inline; filename={title.replace(' ', '_').lower()}_{customer_id}.pdf"
     return response

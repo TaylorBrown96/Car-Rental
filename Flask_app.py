@@ -791,6 +791,15 @@ def GenerateRentalAgreement():
     reservation_id = 2
     return generate.rentalAgreement(reservation_id)
 
+
+@app.route('/GenerateInvoice')
+def GenerateInvoice():
+    if "UserID" not in session:
+        return redirect(url_for("index"))
+    
+    reservation_id = 2
+    return generate.invoiceForSingleVehicle(reservation_id)
+
 # Main entry point for the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
