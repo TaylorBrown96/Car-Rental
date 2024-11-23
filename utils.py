@@ -154,8 +154,12 @@ def generate_dates_between(start_date, end_date):
 
 def login_user(email, password):
     data = get_user(email)
+    if data == None:
+        modal = populateErrorModal("The password or email you have entered is incorrect")
+        return (False, modal)
+    
     if data[13] == 'False':
-        modal = populateErrorModal("Your account has been disabled. Please contact an administrator for assistance.")
+        modal = populateErrorModal("Your account has been disabled. Please contact an administrator for assistance.", title="Account Disabled")
         return (False, modal)
     try:
         # Check if hashed password matches database entry
