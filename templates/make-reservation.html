@@ -103,12 +103,12 @@
                                     <input class="form-control" type="text" id="name-2" name="name" placeholder="Name">
                                 </div>
                                 <div class="mb-3">
-                                    <input class="form-control" type="email" id="email-2" name="email" placeholder="Email">
-                                    <input class="form-control" type="number" id="email-3" placeholder="Phone #" style="margin-top: 14px;" name="phone">
-                                    <input class="form-control" type="text" id="email-1" name="address" placeholder="Address" style="margin-top: 14px;">
-                                    <label class="form-label" style="margin-top: 10px;margin-left: 10px;">Drivers License Photo</label>
+                                    <input class="form-control" type="email" id="email-2" name="email" placeholder="Email" required>
+                                    <input class="form-control" type="number" id="email-3" placeholder="Phone #" style="margin-top: 14px;" name="phone" required>
+                                    <input class="form-control" type="text" id="email-1" name="address" placeholder="Address" style="margin-top: 14px;" required>
+                                    <label class="form-label" style="margin-top: 10px;margin-left: 10px;" required>Drivers License Photo</label>
                                     <input class="form-control" type="file" name="driversLicensePhoto">
-                                    <select name="dropofflocation" class="form-select" style="margin-top: 10px;">
+                                    <select name="dropofflocation" class="form-select" style="margin-top: 10px;" required>
                                         <option value="0" disabled selected>Select Dropoff Location</option>
                                         {{ locationOptions}}
                                     </select>
